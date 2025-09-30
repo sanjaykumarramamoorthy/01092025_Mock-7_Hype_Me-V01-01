@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Products</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <style>
+      .header-main {
+        background-color: white;
+        position: sticky;
+      }
+      .card-header {
+        color: white;
+        font-size: clamp(14px, 1.4vw, 23px);
+        font-weight: 500;
+        color: rgba(197, 197, 197, 0.89);
+        margin-bottom: 0;
+      }
+      .card-desc,
+      .views,
+      .likes {
+        display: flex;
+      }
+      .views {
+        margin-right: 1em;
+      }
+      .card-img {
+        width: 100%;
+        aspect-ratio: 6 / 5;
+        background-color: white;
+        display: grid;
+        place-items: center;
+      }
+      .card-img img {
+        object-fit: scale-down;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .card-desc {
+        margin-top: 0.35em;
+      }
+      .heart-icon,
+      .views-icon {
+        min-width: 13px;
+        width: 2vw;
+        margin-right: 0.1em;
+      }
+      .price {
+        display: inline-block;
+        margin-right: auto;
+      }
+      .cards-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2vw;
+        display: none;
+      }
+      .cards-grid.active {
+        display: grid;
+      }
+      .main-content .profile-card {
+        background-color: white;
+        margin: 1.5vw 5.5vw 0 5.5vw;
+        padding: 2vw 1.75vw 2vw 4vw;
+        justify-content: space-between;
+        gap: 2vw;
+      }
+      .profile-wrapper {
+        gap: 2.5vw;
+      }
+      .zip {
+        margin-top: 0.7em;
+      }
+      .zip-icon {
+        width: 1.5vw;
+        min-width: 10px;
+      }
+      .zip span {
+        font-size: clamp(12px, 1vw, 19px);
+        margin-left: 0.3em;
+        color: rgb(63, 63, 63);
+        font-weight: 600;
+      }
+      .prof-img {
+        position: relative;
+      }
+      .upload-pic {
+        width: 2vw;
+        min-width: 20px;
+        position: absolute;
+        right: 5%;
+        bottom: 7%;
+      }
+      .counters {
+        box-sizing: border-box;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        place-items: center;
+        column-gap: 1vw;
+        margin-left: 20px;
+        width: 50%;
+      }
+      .counter-item {
+        height: 100%;
+      }
+      .counters .icon {
+        width: 3vw;
+        min-width: 30px;
+      }
+      .counter-desc,
+      .yrs-of-hist {
+        font-size: clamp(12px, 0.7vw, 16px);
+        color: rgb(124, 124, 124);
+      }
+      .counter-item .count {
+        font-size: clamp(20px, 2.4vw, 44px);
+        font-weight: 800;
+      }
+      .shop-name > *:first-child {
+        font-size: clamp(18px, 1.5vw, 28px);
+        font-weight: bold;
+        margin-right: 1em;
+      }
+      .shop-name .edit {
+        font-size: clamp(12px, 1vw, 18px);
+        color: var(--primary-color);
+        gap: 0.5em;
+      }
+      .edit img {
+        width: clamp(8px, 0.9vw, 12px);
+      }
+      .products-reviews-tabs {
+        margin: 0 5.5vw 0 5.5vw;
+        padding: 2em 3em;
+        gap: 4em;
+        border-bottom: 1px solid gray;
+      }
+      .tab-item {
+        font-size: clamp(14px, 1.4vw, 24px);
+        color: rgb(161, 161, 161);
+        border: none;
+        background: none;
+        cursor: pointer;
+      }
+      .tab-item.active {
+        color: white;
+      }
+      .shoes-tabs {
+        margin: 0 5.5vw 0 5.5vw;
+        padding: 2em 3em;
+        padding-top: 0;
+        gap: 2em;
+        display: none;
+      }
+      .shoes-tabs.active {
+        display: flex;
+      }
+      .shoes-tabs .tab-item {
+        font-size: clamp(12px, 1vw, 18px);
+        padding-block: 1.5em 1em;
+      }
+      .shoes-tabs .tab-item.active {
+        border-bottom: 3px solid white;
+        padding-inline: 0.6em;
+      }
+      .footer-links {
+        padding-top: 0;
+      }
+      .sort-filter {
+        color: #9d5bf5;
+        margin-left: auto;
+        font-size: clamp(12px, 1vw, 18px);
+        gap: 5px;
+        cursor: pointer;
+      }
+      .dd-arr {
+        width: 1.4vw;
+        min-width: 8px;
+      }
+      .prod-add-button {
+        position: fixed;
+        bottom: 12%;
+        right: 2%;
+        border: none;
+        background: none;
+        box-shadow: 0 0 10px 1px black;
+        width: fit-content;
+        border-radius: 50%;
+        aspect-ratio: 1 / 1;
+        padding: 0;
+        cursor: pointer;
+      }
+      .prod-add-button img {
+        width: clamp(40px, 4.3vw, 5rem);
+      }
+      .rating-card {
+        padding: 4% 5% 20% 5%;
+        border: 1px solid #ddd;
+        font-family: Arial, sans-serif;
+        background: #fff;
+        box-sizing: border-box;
+      }
+
+      .rating-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .product-img {
+        width: 39%;
+        margin-right: 1rem;
+        object-fit: cover;
+      }
+      .review-title {
+        font-size: clamp(16px, 1.2vw, 1.2rem);
+        color: rgb(58, 57, 57);
+      }
+      .rating-summary {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex-grow: 1;
+        align-items: center;
+      }
+      .rating-score {
+        font-size: clamp(20px, 2vw, 2.3rem);
+      }
+      .out-of {
+        font-size: 0.75em;
+        color: rgb(88, 88, 88);
+      }
+
+      .average-rating {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .average-rating .star {
+        color: var(--primary-color);
+        margin-right: 0.2rem;
+        font-size: clamp(16px, 1.4vw, 1.5rem);
+      }
+
+      .total-ratings {
+        color: #888;
+        font-size: clamp(16px, 1.3vw, 1.5rem);
+        margin-top: 0.4em;
+      }
+
+      .rating-bars {
+        margin-top: 8%;
+      }
+
+      .rating-row {
+        display: flex;
+        align-items: center;
+        margin: 2% 0;
+        font-size: 0.9rem;
+        gap: 2vw;
+      }
+
+      .rating-row span {
+        font-size: clamp(14px, 1vw, 18px);
+        color: rgb(100, 100, 100);
+        display: inline-block;
+      }
+      .rating-row span:first-child {
+        width: 50px;
+      }
+      .review-footer {
+        position: relative;
+      }
+      .bar {
+        height: 9px;
+        background: #e0e0e0;
+        border-radius: 50px;
+        overflow: hidden;
+        width: 70%;
+      }
+
+      .fill {
+        height: 100%;
+        background: var(--primary-color);
+        border-radius: 50px;
+      }
+      .reviews-section {
+        padding: 1vw 0 !important;
+        display: none;
+      }
+      .reviews-section.active {
+        display: block;
+      }
+      .reviews-ratings-container {
+        display: flex;
+      }
+      .seller-name {
+        color: white;
+        font-size: clamp(16px, 1.6vw, 1.8rem);
+        margin-bottom: 0;
+        letter-spacing: 1px;
+      }
+      .seller-desc {
+        font-size: clamp(12px, 1.1vw, 20px);
+        color: rgb(189, 188, 188);
+        margin-block: 0.5em 2em;
+      }
+      .ratings {
+        width: 37%;
+      }
+      .reviews-container {
+        width: 0;
+        flex-grow: 1;
+        background-color: #fff;
+        padding: 2% 3%;
+      }
+      .review-text {
+        font-size: clamp(14px, 1vw, 18px);
+        color: gray;
+      }
+      .review-meta {
+        color: gray;
+        font-size: clamp(12px, 1vw, 16px);
+      }
+      .read-more {
+        float: right;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: clamp(12px, 1vw, 16px);
+      }
+      .review-actions {
+        text-align: right;
+        color: rgb(104, 104, 104);
+        font-size: clamp(12px, 1vw, 16px);
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 1vw;
+      }
+      .thumbs-up,
+      .thumbs-down {
+        background: none;
+        border: none;
+        color: gray;
+        display: flex;
+        align-items: center;
+        min-width: 30px;
+        width: 1.8vw;
+        margin-right: 10px;
+      }
+      .thumbs-down img {
+        transform: rotate(180deg);
+      }
+      .ratings-filter-chips {
+        display: flex;
+        gap: 1vw;
+        margin: 0;
+      }
+      .review-header {
+        align-items: center;
+        border-bottom: 1px solid rgb(187, 187, 187);
+        padding-bottom: 1vw;
+      }
+      .chip {
+        padding: 0.3em 1em;
+        border-radius: 50px;
+        border: 1px solid rgb(150, 149, 149);
+        width: fit-content;
+        color: rgb(173, 173, 173);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        font-size: clamp(12px, 1vw, 18px);
+        cursor: pointer;
+      }
+      .chip.active {
+        background-color: #5718be;
+        color: white;
+        border-color: #5718be;
+      }
+      .chip .fa-star {
+        color: rgb(150, 150, 150) !important;
+        font-size: clamp(10px, 0.7vw, 14px);
+      }
+      .pagination-bar.active {
+        display: flex;
+      }
+      .pagination-bar {
+        background-color: var(--main-section-bg);
+        padding: 2vw 7.8vw 2vw 2vw;
+        justify-content: flex-end;
+        align-items: center;
+        display: none;
+      }
+      .pagination {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        position: static;
+      }
+      .page-item {
+        color: rgb(165, 165, 165);
+        border-radius: 50%;
+        aspect-ratio: 1 / 1;
+        width: 2vw;
+        min-width: 1.5em;
+        display: grid;
+        place-items: center;
+        margin-right: 0.5em;
+        cursor: pointer;
+      }
+      .page-next-btn,
+      .page-prev-btn {
+        background: none;
+        border: none;
+        padding: 0.3em 0.5em;
+        color: #7b40db;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .page-prev-btn {
+        margin-right: 1%;
+      }
+      .page-item.active {
+        background-color: #7b40db;
+        color: black;
+      }
+      .page-ellipsis {
+        pointer-events: none;
+        cursor: default;
+        color: #ddd;
+      }
+      @media screen and (max-width: 1600px) {
+        .cards-grid {
+          gap: 3vw;
+        }
+        .products-reviews-tabs,
+        .shoes-tabs {
+          padding-inline: 20px;
+        }
+      }
+      @media screen and (max-width: 1200px) {
+        .main-content .selected-tab-content,
+        .pagination-bar {
+          padding-inline: clamp(20px, 4vw, 50px);
+        }
+        .main-content .profile-card {
+          margin-inline: clamp(20px, 4vw, 50px);
+        }
+        .products-reviews-tabs,
+        .shoes-tabs {
+          padding: 20px 10px;
+          margin-inline: 4vw;
+        }
+        .shoes-tabs .tab-item {
+          padding-block: 1em;
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        .counters {
+          column-gap: 13px;
+        }
+      }
+      @media screen and (max-width: 920px) {
+        .review-header {
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+        }
+      }
+      @media screen and (max-width: 850px) {
+        .main-content .profile-card {
+          flex-direction: column;
+        }
+        .counters {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          margin: 0;
+          padding: 20px 30px;
+          justify-content: space-between;
+        }
+        .profile-wrapper {
+          margin-right: auto;
+        }
+        .prof-img {
+          width: 80px;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .cards-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        .reviews-ratings-container {
+          flex-direction: column;
+        }
+        .reviews-container {
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .ratings {
+          width: 100%;
+        }
+        .rating-card {
+          padding-bottom: 30px;
+        }
+        .shoes-tabs {
+          padding-top: 10px;
+        }
+        .review-header {
+          flex-direction: row;
+          padding-bottom: 15px;
+        }
+      }
+      @media screen and (max-width: 600px) {
+        .counters {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          place-items: unset;
+          row-gap: 2vw;
+          text-align: center;
+          padding: 10px;
+        }
+        .counter-item .icon {
+          margin-inline: auto;
+        }
+        .cards-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+        .views,
+        .shop-name > *:first-child {
+          margin-right: 2vw;
+        }
+        .main-content .profile-card {
+          padding: 15px;
+        }
+        .prof-img {
+          width: 60px;
+          align-self: flex-start;
+        }
+        .reviews-container {
+          padding: 10px 12px;
+        }
+        .main-content {
+          padding-top: 20px;
+        }
+        .star {
+          font-size: 12px;
+        }
+        .products-reviews-tabs {
+          margin-inline: 20px;
+        }
+        .review-header {
+          flex-direction: column;
+          padding-bottom: 5px;
+        }
+        .ratings-filter-chips {
+          flex-wrap: wrap;
+        }
+        .pagination-bar {
+          justify-content: space-around;
+          box-sizing: border-box;
+          padding-block: 30px 20px;
+        }
+        .page-item {
+          margin-right: 0;
+          font-size: 14px;
+        }
+      }
+      @media screen and (max-width: 360px) {
+        .pagination-bar {
+          padding: 15px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="flexbox header-main">
+      <a href="./index.html" class="logo-link"
+        ><img class="logo" src="./assets/images/logo.png" alt="Hype Me Logo" />
+      </a>
+      <div class="right-nav flexbox">
+        <img
+          class="search-icon"
+          src="./assets/images/g-search.png"
+          alt="Search Icon"
+        />
+        <div class="location flexbox">
+          <span class="location-desc">TX 77441</span>
+          <img
+            src="./assets/images/location.png"
+            alt="Location Marker"
+            class="location-marker"
+          />
+        </div>
+        <div class="profile flexbox">
+          <img
+            src="./assets/images/channels4_profile.jpg"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <img
+            src="./assets/images/profile-arrow.png"
+            alt=""
+            class="dropdown-caret"
+          />
+          <ul class="prof-dd logout">
+            <li class="dd-item">
+              <button id="logout-btn">Log Out</button>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons flexbox">
+          <button class="buy-btn active">Buy</button
+          ><button class="sell-btn" style="pointer-events: none">Sell</button>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <section class="profile-card flexbox">
+        <div class="profile-wrapper flexbox">
+          <div class="prof-img">
+            <img
+              src="./assets/images/My Products/profile-picture.png"
+              alt="profile image"
+              class="prof-pic"
+            />
+            <a href="./seller-profile.html"
+              ><img
+                src="./assets/images/My Products/upload-picture.png"
+                alt="camera icon"
+                class="upload-pic"
+            /></a>
+          </div>
+          <div class="prof-desc">
+            <div class="shop-name flexbox">
+              <span id="user-name">Malhotra Collections</span
+              ><a
+                class="flexbox edit"
+                href="./seller-profile.html"
+                style="text-decoration: none"
+              >
+                <img
+                  src="./assets/images/My Products/edit.png"
+                  alt="edit icon"
+                />
+                <span>Edit</span>
+              </a>
+            </div>
+            <span class="yrs-of-hist">Member Since Mar 2017</span>
+            <div class="zip flexbox">
+              <img
+                src="./assets/images/My Products/location.png"
+                alt="location marker icon"
+                class="zip-icon"
+              />
+              <span>TX <span id="zipCode">77441</span></span>
+            </div>
+          </div>
+        </div>
+        <ul class="counters">
+          <li class="counter-item">
+            <div class="icon">
+              <img src="./assets/images/My Products/product-views.png" alt="" />
+            </div>
+            <div class="count" style="color: #0192b6">985</div>
+            <div class="counter-desc">Total Product Views</div>
+          </li>
+          <li class="counter-item">
+            <div class="icon">
+              <img src="./assets/images/My Products/proucts-likes.png" alt="" />
+            </div>
+            <div class="count" style="color: #ef3d3f">456</div>
+            <div class="counter-desc">Total Product Likes</div>
+          </li>
+          <li class="counter-item">
+            <div class="icon">
+              <img src="./assets/images/My Products/followers.png" alt="" />
+            </div>
+            <div class="count" style="color: #6e54de">154</div>
+            <div class="counter-desc">Followers</div>
+          </li>
+          <li class="counter-item">
+            <div class="icon">
+              <img src="./assets/images/My Products/following.png" alt="" />
+            </div>
+            <div class="count" style="color: #42ad43">22</div>
+            <div class="counter-desc">Following</div>
+          </li>
+        </ul>
+      </section>
+      <div class="products-reviews-tabs flexbox">
+        <button class="tab-item active" data-target="my-products">
+          My Products (<span class="prods-count">64</span>)
+        </button>
+        <button class="tab-item" data-target="user-reviews">
+          User Reviews (<span class="revs-count">1620</span>)
+        </button>
+      </div>
+      <div class="shoes-tabs flexbox active">
+        <button class="tab-item" data-target="new-shoes">
+          New Shoes (<span>48</span>)
+        </button>
+        <button class="tab-item active" data-target="used-shoes">
+          Used Shoes (<span>16</span>)
+        </button>
+        <div class="sort-filter flexbox">
+          <span>Sort by Recent</span>
+          <img
+            src="./assets/images/My Products/drop-down.png"
+            class="dd-arr"
+            alt="dropdown caret image"
+          />
+        </div>
+      </div>
+      <section class="selected-tab-content">
+        <div class="cards-grid active"></div>
+        <section class="reviews-section">
+          <h2 class="seller-name">Malhotra Collections User Reviews</h2>
+          <p class="seller-desc">
+            Looking for Malhotra Collections? Here are the reviews and ratings
+            from across the country.
+          </p>
+          <div class="reviews-ratings-container">
+            <div class="ratings">
+              <div class="rating-card">
+                <div class="rating-header">
+                  <img
+                    src="./assets/images/profile-pic.jpg"
+                    alt="Product Image"
+                    class="product-img"
+                  />
+                  <div class="rating-summary">
+                    <div class="average-rating">
+                      <span class="star"
+                        ><i class="fa-solid fa-star" style="color: #5718be"></i
+                      ></span>
+                      <span class="rating-score"
+                        >4.4/<span class="out-of">5</span>
+                      </span>
+                    </div>
+                    <div class="total-ratings">1620 Ratings</div>
+                  </div>
+                </div>
+
+                <div class="rating-bars">
+                  <div class="rating-row">
+                    <span>5 Star</span>
+                    <div class="bar">
+                      <div class="fill" style="width: 68%"></div>
+                    </div>
+                    <span>68%</span>
+                  </div>
+                  <div class="rating-row">
+                    <span>4 Star</span>
+                    <div class="bar">
+                      <div class="fill" style="width: 18%"></div>
+                    </div>
+                    <span>18%</span>
+                  </div>
+                  <div class="rating-row">
+                    <span>3 Star</span>
+                    <div class="bar">
+                      <div class="fill" style="width: 5%"></div>
+                    </div>
+                    <span>5%</span>
+                  </div>
+                  <div class="rating-row">
+                    <span>2 Star</span>
+                    <div class="bar">
+                      <div class="fill" style="width: 4%"></div>
+                    </div>
+                    <span>4%</span>
+                  </div>
+                  <div class="rating-row">
+                    <span>1 Star</span>
+                    <div class="bar">
+                      <div class="fill" style="width: 5%"></div>
+                    </div>
+                    <span>5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="reviews-container">
+              <header class="review-header flexbox">
+                <ul class="ratings-filter-chips">
+                  <li class="chip active">All</li>
+                  <li class="chip">
+                    <span
+                      ><i class="fa-solid fa-star" style="color: #727272"></i
+                    ></span>
+                    5
+                  </li>
+                  <li class="chip">
+                    <span
+                      ><i class="fa-solid fa-star" style="color: #727272"></i
+                    ></span>
+                    4
+                  </li>
+                  <li class="chip">
+                    <span
+                      ><i class="fa-solid fa-star" style="color: #727272"></i
+                    ></span>
+                    3
+                  </li>
+                  <li class="chip">
+                    <span
+                      ><i class="fa-solid fa-star" style="color: #727272"></i
+                    ></span>
+                    2
+                  </li>
+                  <li class="chip">
+                    <span
+                      ><i
+                        class="fa-solid fa-star"
+                        style="color: #727272"
+                      ></i></span
+                    >1
+                  </li>
+                </ul>
+                <div class="sort-filter flexbox">
+                  <span>Sort by Recent</span>
+                  <img
+                    src="./assets/images/My Products/drop-down.png"
+                    class="dd-arr"
+                    alt="dropdown caret image"
+                  />
+                </div>
+              </header>
+              <div class="review">
+                <h3 class="review-title">
+                  Stylish slip, perfect for staying at home during COVID!
+                </h3>
+                <p class="review-text">
+                  I'm someone who is very flat footed so have to wear shoes with
+                  orthotic inserts. These shoes are a lifesaver for home comfort
+                  and support during lockdown!
+                </p>
+                <a href="#" class="read-more">Read More</a>
+                <div class="review-footer">
+                  <span class="review-meta"
+                    >2 days ago | <strong>Siddharth Sharma</strong></span
+                  >
+                  <div class="review-rating">
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                  </div>
+                </div>
+                <div class="review-actions">
+                  <span>The review was helpful</span>
+                  <button class="thumbs-up">
+                    <img src="assets/images/icons8-thumbs-up-30.png" alt="" />
+                    (5)
+                  </button>
+                  <button class="thumbs-down">
+                    <img
+                      src="./assets/images/icons8-thumbs-up-30.png"
+                      alt=""
+                    />(0)
+                  </button>
+                </div>
+              </div>
+              <hr />
+              <div class="review">
+                <h3 class="review-title">
+                  Decently priced for a cool looking pair of shoes
+                </h3>
+                <p class="review-text">
+                  Great value for money. The shoes are lightweight, stylish, and
+                  I get compliments every time I wear them to the gym.
+                </p>
+                <div class="review-footer">
+                  <span class="review-meta"
+                    >2 days ago | <strong>Faraz</strong></span
+                  >
+                  <div class="review-rating">
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive"
+                      ><i class="fa-regular fa-star" style="color: #5718be"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="review-actions">
+                  <span>The review was helpful</span>
+                  <button class="thumbs-up">
+                    <img src="assets/images/icons8-thumbs-up-30.png" alt="" />
+                    (3)
+                  </button>
+                  <button class="thumbs-down">
+                    <img
+                      src="./assets/images/icons8-thumbs-up-30.png"
+                      alt=""
+                    />(0)
+                  </button>
+                </div>
+              </div>
+              <hr />
+              <div class="review">
+                <h3 class="review-title">Super comfy for long walks</h3>
+                <p class="review-text">
+                  I walk a lot for work and these shoes have been super
+                  comfortable. No blisters, no pain, just pure comfort all day
+                  long.
+                </p>
+                <a href="#" class="read-more">Read More</a>
+                <div class="review-footer">
+                  <span class="review-meta"
+                    >2 days ago | <strong>Siddharth Sharma</strong></span
+                  >
+                  <div class="review-rating">
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive"
+                      ><i class="fa-regular fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive"
+                      ><i class="fa-regular fa-star" style="color: #5718be"></i
+                    ></span>
+                  </div>
+                </div>
+                <div class="review-actions">
+                  <span>The review was helpful</span>
+                  <button class="thumbs-up">
+                    <img src="assets/images/icons8-thumbs-up-30.png" alt="" />
+                    (5)
+                  </button>
+                  <button class="thumbs-down">
+                    <img
+                      src="./assets/images/icons8-thumbs-up-30.png"
+                      alt=""
+                    />(0)
+                  </button>
+                </div>
+              </div>
+
+              <hr />
+
+              <div class="review">
+                <h3 class="review-title">Best shoes for running errands</h3>
+                <p class="review-text">
+                  These are my go-to shoes for running errands. Easy to slip on,
+                  supportive, and they look great with any outfit.
+                </p>
+                <div class="review-footer">
+                  <span class="review-meta"
+                    >2 days ago | <strong>Faraz</strong></span
+                  >
+                  <div class="review-rating">
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive"
+                      ><i class="fa-regular fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive"
+                      ><i class="fa-regular fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive"
+                      ><i class="fa-regular fa-star" style="color: #5718be"></i
+                    ></span>
+                  </div>
+                </div>
+                <div class="review-actions">
+                  <span>The review was helpful</span>
+                  <button class="thumbs-up">
+                    <img src="assets/images/icons8-thumbs-up-30.png" alt="" />
+                    (3)
+                  </button>
+                  <button class="thumbs-down">
+                    <img
+                      src="./assets/images/icons8-thumbs-up-30.png"
+                      alt=""
+                    />(0)
+                  </button>
+                </div>
+              </div>
+              <hr />
+              <div class="review">
+                <h3 class="review-title">Durable and worth the price</h3>
+                <p class="review-text">
+                  After months of daily use, these shoes still look brand new.
+                  The build quality is impressive and they’re definitely worth
+                  the price.
+                </p>
+                <a href="#" class="read-more">Read More</a>
+                <div class="review-footer">
+                  <span class="review-meta"
+                    >2 days ago | <strong>Siddharth Sharma</strong></span
+                  >
+                  <div class="review-rating">
+                    <span class="star"
+                      ><i class="fa-solid fa-star" style="color: #5718be"></i
+                    ></span>
+                    <span class="star inactive">
+                      <i class="fa-regular fa-star" style="color: #5718be"></i>
+                    </span>
+                    <span class="star inactive">
+                      <i class="fa-regular fa-star" style="color: #5718be"></i>
+                    </span>
+                    <span class="star inactive">
+                      <i class="fa-regular fa-star" style="color: #5718be"></i>
+                    </span>
+                    <span class="star inactive">
+                      <i class="fa-regular fa-star" style="color: #5718be"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="review-actions">
+                  <span>The review was helpful</span>
+                  <button class="thumbs-up">
+                    <img src="assets/images/icons8-thumbs-up-30.png" alt="" />
+                    (5)
+                  </button>
+                  <button class="thumbs-down">
+                    <img
+                      src="./assets/images/icons8-thumbs-up-30.png"
+                      alt=""
+                    />(0)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+    <div class="pagination-bar">
+      <button class="page-prev-btn">Prev</button>
+      <ul class="pagination"></ul>
+      <button class="page-next-btn">Next</button>
+    </div>
+    <button class="prod-add-button">
+      <img src="./assets/images/My Products/add-fab-button.png" alt="" />
+    </button>
+    <footer class="footer-primary">
+      <script src="./assets/js/reviewsPagination.js"></script>
+      <ul class="footer-links flexbox">
+        <li class="link-item"><a href="">ABOUT US</a></li>
+        <li class="link-item"><a href="">WHY HYPE ME</a></li>
+        <li class="link-item"><a href="">CONTACT US</a></li>
+        <li class="link-item"><a href="">PRIVACY POLICY</a></li>
+        <li class="link-item"><a href="">DISCLAIMER</a></li>
+      </ul>
+      <div class="social-media-links">
+        <a href=""
+          ><img
+            src="./assets/images/instagram.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-facebook.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-twitter.png"
+            alt=""
+            class="link-icon"
+        /></a>
+      </div>
+      <div class="footer-bottom-text">
+        &copy; 2021 Hype-me. All Rights Reserved.
+      </div>
+    </footer>
+    <script src="./assets/js/myproducts.js"></script>
+    <script src="./assets/js/switch.js"></script>
+    <script src="./assets/js/logout.js"></script>
+    <script></script>
+  </body>
+</html>

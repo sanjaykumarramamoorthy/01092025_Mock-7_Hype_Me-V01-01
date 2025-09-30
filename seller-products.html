@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seller Profile - Products</title>
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <style>
+      .header-main {
+        background-color: white;
+        position: sticky;
+        top: 0;
+      }
+      .main-content {
+        padding: 4vw 5.8vw;
+        background-color: var(--main-section-bg);
+        gap: 2.5vw;
+        align-items: flex-start;
+      }
+      .btn-follow img,
+      .socials img,
+      .location img,
+      .avatar img {
+        width: 30px;
+      }
+      .avatar {
+        width: fit-content;
+        padding: 1.6rem;
+        font-size: clamp(18px, 2.6vw, 3rem);
+        font-weight: bold;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        background-color: rgba(206, 206, 79, 0.664);
+        text-align: center;
+        align-content: center;
+        border-radius: 50%;
+        margin-inline: auto;
+        letter-spacing: 1px;
+      }
+      .avatar img {
+        position: absolute;
+        bottom: 4%;
+        right: 4%;
+      }
+      .seller-profile .card {
+        background-color: white;
+        width: fit-content;
+        padding: 2.5vw 4vw 3vw 4vw;
+        text-align: center;
+      }
+      .card .name {
+        font-size: clamp(18px, 1.5vw, 1.7rem);
+        font-weight: bold;
+        margin-top: 0.5em;
+        letter-spacing: 1px;
+        color: rgb(39, 39, 39);
+      }
+      .main-content .location-zip {
+        margin: 0.6vw 0 0 0;
+        justify-content: center;
+        font-size: clamp(12px, 1vw, 19px);
+      }
+      .member {
+        color: rgb(177, 177, 177);
+        font-size: clamp(12px, 1vw, 17px);
+      }
+      .main-content .location-zip img {
+        min-width: 10px;
+        width: 0.9vw;
+        margin-right: 3%;
+      }
+      .btn-follow {
+        background-color: var(--primary-color);
+        border: none;
+        margin-inline: auto;
+        margin-top: 2vw;
+        font-size: clamp(14px, 1vw, 18px);
+        color: white;
+        padding: 0.5em 4.4em;
+        gap: 0.5em;
+      }
+      .socials {
+        justify-content: center;
+        gap: 1vw;
+        margin-top: 2.3vw;
+      }
+      .dd-arr-icon {
+        width: 20px;
+      }
+      .top-header {
+        justify-content: space-between;
+      }
+      .top-header .section-title {
+        color: white;
+        font-size: clamp(16px, 1.3vw, 20px);
+        margin: 0;
+        text-indent: 1em;
+        letter-spacing: 1px;
+      }
+      .seller-products {
+        width: 0;
+        flex-grow: 1;
+      }
+      .filter {
+        color: rgb(153, 153, 153);
+        font-size: clamp(12px, 1vw, 18px);
+        gap: 0.7em;
+        margin-right: 1vw;
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2vw;
+        margin-top: 2vw;
+      }
+      .card-img {
+        width: 100%;
+        aspect-ratio: 6 / 5;
+        background-color: white;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .card-img img {
+        object-fit: scale-down;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .card-header {
+        margin-bottom: 0;
+        color: rgb(214, 213, 213);
+        font-size: clamp(14px, 1.2vw, 22px);
+        font-weight: 500;
+      }
+      .card-desc {
+        color: white;
+        margin-top: 0.3em;
+        font-size: clamp(12px, 1.2vw, 22px);
+      }
+      dialog.ask-signup .dialog-content {
+        background-color: white;
+        padding: 2em;
+        border-radius: 8px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      dialog.ask-signup .dialog-buttons {
+        margin-top: 1.5em;
+        justify-content: center;
+        gap: 1.5em;
+      }
+      dialog.ask-signup .dialog-btn {
+        padding: 0.5em 2em;
+        font-size: clamp(14px, 1.2vw, 18px);
+        border: none;
+        cursor: pointer;
+        background-color: var(--primary-color);
+        color: white;
+      }
+      .footer-links {
+        padding-top: 0;
+      }
+      @media screen and (max-width: 1400px) {
+        .main-content {
+          padding: 40px;
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        .main-content {
+          flex-direction: column;
+          gap: 5vw;
+          padding-inline: 30px;
+        }
+        .seller-products {
+          width: 100%;
+        }
+        .products-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .seller-profile {
+          margin-inline: auto;
+        }
+        .seller-profile .card {
+          box-sizing: border-box;
+        }
+        .top-header .section-title {
+          text-indent: 0;
+          font-size: 14px;
+        }
+        .avatar {
+          padding: 1rem;
+        }
+        .avatar img {
+          width: 22px;
+          bottom: 1%;
+          right: 1%;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .products-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 10px;
+        }
+        .main-content {
+          padding-inline: 20px;
+        }
+        .socials {
+          margin-block: 20px;
+        }
+      }
+      @media screen and (max-width: 600px) {
+        .products-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .seller-profile {
+          width: 100%;
+        }
+        .seller-profile .card {
+          width: 100%;
+        }
+        .top-header {
+          margin-bottom: 20px;
+        }
+        .dd-arr-icon {
+          width: 10px;
+        }
+        .name,
+        .member,
+        .main-content .location-zip {
+          margin-bottom: 10px;
+        }
+        .avatar {
+          padding: 1rem;
+        }
+        .avatar img {
+          width: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="flexbox header-main">
+      <a href="./index.html" class="logo-link"
+        ><img class="logo" src="./assets/images/logo.png" alt="Hype Me Logo" />
+      </a>
+      <div class="right-nav flexbox">
+        <img
+          class="search-icon"
+          src="./assets/images/g-search.png"
+          alt="Search Icon"
+        />
+        <div class="location flexbox">
+          <span class="location-desc">TX 77441</span>
+          <img
+            src="./assets/images/location.png"
+            alt="Location Marker"
+            class="location-marker"
+          />
+        </div>
+        <div class="profile flexbox">
+          <img
+            src="./assets/images/channels4_profile.jpg"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <img
+            src="./assets/images/profile-arrow.png"
+            alt=""
+            class="dropdown-caret"
+          />
+          <ul class="prof-dd logout">
+            <li class="dd-item">
+              <button id="logout-btn">Log Out</button>
+            </li>
+          </ul>
+          <ul class="prof-dd login">
+            <li class="dd-item">
+              <button id="signup-btn">Sign Up</button>
+            </li>
+            <li class="dd-item">
+              <button id="login-btn">Log in</button>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons flexbox">
+          <button class="buy-btn" style="pointer-events: none">Buy</button
+          ><button class="sell-btn active">Sell</button>
+        </div>
+      </div>
+    </header>
+    <dialog class="ask-signup">
+      <div class="dialog-content">
+        <h2>Please log in to continue</h2>
+        <div class="dialog-buttons flexbox">
+          <button class="dialog-btn" id="dialog-login-btn">Log In</button>
+          <button class="dialog-btn" id="dialog-cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+    <main class="main-content flexbox">
+      <div class="seller-profile">
+        <div class="card">
+          <div class="avatar">
+            MC
+            <img
+              src="./assets/images/My Products/upload-picture.png"
+              alt="camera"
+            />
+          </div>
+          <div class="name">Malhotra Collections</div>
+          <div class="member">Member Since Mar 2017</div>
+          <div class="location-zip flexbox">
+            <img src="./assets/images/location.png" alt="pin" />
+            <span>TX 77441</span>
+          </div>
+          <button class="btn-follow flexbox">
+            <img src="./assets/images/My Products/followers.png" alt="" />
+            <span>Follow</span>
+          </button>
+          <div class="socials flexbox">
+            <img src="./assets/images/ins-4.png" alt="Instagram" />
+            <img src="./assets/images/profile-fb.png" alt="Facebook" />
+            <img src="./assets/images/profile-twitter.png" alt="Twitter" />
+          </div>
+        </div>
+      </div>
+      <section class="seller-products">
+        <div class="top-header flexbox">
+          <h2 class="section-title">
+            Published Products (<span class="prods-count">64</span>)
+          </h2>
+          <div class="filter flexbox">
+            Sort by:
+            <span style="color: rgb(165, 104, 221)">Recent</span>
+            <img
+              src="./assets/images/My Products/drop-down.png"
+              alt=""
+              class="dd-arr-icon"
+              style="margin-left: 0.7vw"
+            />
+          </div>
+        </div>
+        <div class="products-grid"></div>
+      </section>
+    </main>
+    <footer class="footer-primary">
+      <ul class="footer-links flexbox">
+        <li class="link-item"><a href="">ABOUT US</a></li>
+        <li class="link-item"><a href="">WHY HYPE ME</a></li>
+        <li class="link-item"><a href="">CONTACT US</a></li>
+        <li class="link-item"><a href="">PRIVACY POLICY</a></li>
+        <li class="link-item"><a href="">DISCLAIMER</a></li>
+      </ul>
+      <div class="social-media-links">
+        <a href=""
+          ><img
+            src="./assets/images/instagram.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-facebook.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-twitter.png"
+            alt=""
+            class="link-icon"
+        /></a>
+      </div>
+      <div class="footer-bottom-text">
+        &copy; 2021 Hype-me. All Rights Reserved.
+      </div>
+    </footer>
+    <script src="./assets/js/sellerProducts.js"></script>
+    <script src="./assets/js/switch.js"></script>
+    <script src="./assets/js/dropdowns.js"></script>
+  </body>
+</html>

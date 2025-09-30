@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product List</title>
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <style>
+      .backdrop {
+        display: none;
+      }
+      .header-main {
+        background-color: white;
+        position: sticky;
+        top: 0;
+      }
+      .main-content {
+        padding: 1.4vw 8.2vw 1vw 8.2vw;
+        background-color: var(--main-section-bg);
+        gap: 2.6vw;
+        align-items: flex-start;
+      }
+      .breadcrumbs {
+        background-color: var(--main-section-bg);
+        padding: 1.3vw 8vw;
+        color: gray;
+        font-size: clamp(14px, 1vw, 16px);
+      }
+      .breadcrumbs > * {
+        cursor: pointer;
+      }
+      .goto-home {
+        color: rgb(165, 104, 221);
+        text-decoration: none;
+      }
+      .dd-arr-icon {
+        width: 15px;
+      }
+      .top-header {
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .top-header .section-title {
+        color: white;
+        font-size: 22px;
+        margin: 0;
+        letter-spacing: 2px;
+      }
+      .seller-products {
+        width: 0;
+        flex-grow: 1;
+        border-bottom: 1px solid gray;
+        padding-bottom: 1vw;
+      }
+      .filter-mobile {
+        display: none;
+        background-color: var(--main-section-bg);
+        padding-inline: 20px;
+      }
+      .filter-close {
+        display: none;
+        width: 15px;
+      }
+      .filter-slide-btn {
+        background: none;
+        color: white;
+        border: none;
+        gap: 10px;
+        background-color: rgb(114, 29, 194);
+        padding: 0.5em 1em;
+        border-radius: 0.2em;
+      }
+      .filter-icon {
+        width: 2vw;
+      }
+      .filter {
+        color: rgb(156, 156, 156);
+        font-size: clamp(12px, 1vw, 18px);
+        gap: 0.7em;
+        margin-right: 0.5vw;
+      }
+      .prods-count {
+        color: rgb(156, 156, 156);
+        font-size: 0.8em;
+        font-weight: initial;
+        letter-spacing: 0;
+      }
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2vw;
+        margin-top: 2vw;
+        position: relative;
+        min-height: 31vh;
+      }
+      .card-img {
+        width: 100%;
+        aspect-ratio: 6 / 5;
+        background-color: white;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      .card-img img {
+        object-fit: scale-down;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .card-header {
+        margin-bottom: 0;
+        color: rgb(214, 213, 213);
+        font-size: clamp(14px, 1.2vw, 22px);
+        font-weight: 500;
+        white-space: nowrap;
+      }
+      .card-desc {
+        color: white;
+        margin-top: 0.3em;
+        font-size: clamp(12px, 1.2vw, 22px);
+      }
+      .sidebar-header {
+        color: white;
+        border-bottom: 1px solid #8b8b8ba2;
+        margin: 0;
+        padding-block: 0 1.5em;
+        letter-spacing: 1px;
+        font-size: clamp(16px, 1.3vw, 24px);
+      }
+      .filters {
+        width: 22.5%;
+        background-color: var(--main-section-bg);
+      }
+      .filter-group {
+        color: rgb(182, 182, 182);
+        font-size: clamp(14px, 1vw, 18.5px);
+        border-bottom: 1px solid #8b8b8ba2;
+      }
+      .filter-body {
+        padding-bottom: 1.4vw;
+      }
+      .filter-group label {
+        display: block;
+        padding-bottom: 0.7em;
+        width: fit-content;
+      }
+      .filter-group button {
+        font-family: "Poppins";
+        font-size: clamp(14px, 1.1vw, 1.3rem);
+        font-weight: normal;
+        text-transform: uppercase;
+        color: rgb(167, 167, 167);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 100%;
+        background: none;
+        border: none;
+        padding: 1em 0.1em;
+      }
+      .down-arr {
+        width: 1vw;
+        min-width: 10px;
+        margin-right: 3%;
+        transition: all 0.3s ease;
+      }
+      .filter-group.accordions {
+        padding-bottom: 0;
+      }
+      .filter-body {
+        display: none;
+      }
+      .filter-group:has(button.expand) .filter-body {
+        display: block;
+      }
+      .filter-group button.expand .down-arr {
+        transform: rotate(180deg);
+      }
+      .search-bar {
+        border-bottom: 1px solid #8b8b8ba2;
+        margin-bottom: 1.4vw;
+        margin-right: 15%;
+      }
+      .search-icon {
+        width: 1.3vw;
+        min-width: 12px;
+        margin-left: 0.3vw;
+      }
+      .brand-search {
+        background: transparent;
+        border: none;
+        padding: 0.8em 0.3em;
+        color: white;
+        margin-left: 5px;
+      }
+      .more-link {
+        text-decoration: none;
+        color: rgb(152, 63, 235);
+      }
+
+      .slider-container input {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        inset: 0 0 0 0;
+        position: absolute;
+        appearance: none;
+        background: transparent;
+        pointer-events: none;
+      }
+      .slider-container [type="range"]::-webkit-slider-thumb {
+        pointer-events: all;
+        appearance: none;
+        width: 1.3vw;
+        height: 1.3vw;
+        min-width: 15px;
+        min-height: 15px;
+        border-radius: 50%;
+        background-color: white;
+        position: relative;
+        z-index: 1;
+      }
+      .slider-container {
+        width: 85%;
+        height: 5px;
+        display: flex;
+        background: lightgray;
+        position: relative;
+        margin-block: 3vw 1vw;
+        box-sizing: border-box;
+      }
+      .range-track {
+        height: 35px;
+        background-color: #7b40db;
+        position: absolute;
+        bottom: 0;
+        opacity: 0.5;
+      }
+      .pagination-bar {
+        background-color: var(--main-section-bg);
+        padding: 2vw 1vw;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 1.4vw 8.2vw 4vw 8.2vw;
+      }
+      .pagination {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+      }
+      .page-item {
+        color: rgb(165, 165, 165);
+        border-radius: 50%;
+        aspect-ratio: 1 / 1;
+        width: 2vw;
+        min-width: 1.5em;
+        display: grid;
+        place-items: center;
+        margin-right: 0.5em;
+        cursor: pointer;
+      }
+      .page-next-btn,
+      .page-prev-btn {
+        background: none;
+        border: none;
+        padding: 0.3em 0.5em;
+        color: #7b40db;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .page-prev-btn {
+        margin-right: 1%;
+      }
+      .page-item.active {
+        background-color: #7b40db;
+        color: black;
+      }
+      .footer-links {
+        padding-top: 0;
+      }
+      @media screen and (max-width: 1400px) {
+        .main-content {
+          padding: 20px 40px 40px 40px;
+        }
+        .breadcrumbs {
+          padding: 20px 40px;
+        }
+        .top-header .section-title {
+          font-size: 20px;
+        }
+        .slider-container {
+          margin-top: 50px;
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        .main-content {
+          gap: 20px;
+          padding-inline: 30px;
+        }
+        .seller-products {
+          width: 100%;
+        }
+        .seller-profile {
+          margin-inline: auto;
+        }
+        .seller-profile .card {
+          box-sizing: border-box;
+        }
+        .top-header .section-title {
+          text-indent: 0;
+          font-size: 18px;
+        }
+        .filters {
+          width: 260px;
+        }
+        .breadcrumbs {
+          padding: 20px 30px 10px 30px;
+        }
+        .dd-arr-icon {
+          width: 10px;
+        }
+        .slider-container {
+          margin-top: 40px;
+        }
+        .range-track {
+          height: 25px;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .main-content {
+          padding-inline: 20px;
+          position: relative;
+        }
+        .products-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+        .breadcrumbs {
+          padding: 10px 20px;
+        }
+        .top-header .section-title {
+          display: flex;
+          flex-direction: column;
+          font-size: 16px;
+        }
+        .top-header {
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .filter {
+          flex-direction: column;
+          gap: 0;
+        }
+        .filter-mobile {
+          display: block;
+        }
+        .filters {
+          transform: translateX(-110%);
+          position: absolute;
+          transition: all 0.3s ease;
+          padding: 10px 20px 20px 20px;
+          box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.5);
+          border-radius: 5px;
+          z-index: 3;
+          height: 71.5vh;
+          overflow-y: auto;
+        }
+        .filters::-webkit-scrollbar {
+          width: 5px;
+        }
+        .filter-close {
+          display: block;
+        }
+        .filters.show {
+          transform: translateX(-10%);
+        }
+        .sidebar-header {
+          padding-bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+        }
+        .backdrop.active {
+          display: block;
+          position: fixed;
+          inset: 0 0 0 0;
+          background-color: rgba(0, 0, 0, 0.4);
+          z-index: 2;
+        }
+        .range-track {
+          height: 20px;
+        }
+        .slider-container {
+          margin-top: 30px;
+        }
+      }
+      @media screen and (max-width: 600px) {
+        .seller-profile {
+          width: 100%;
+        }
+        .seller-profile .card {
+          width: 100%;
+        }
+        .top-header {
+          margin-bottom: 20px;
+        }
+        .dd-arr-icon {
+          width: 10px;
+        }
+      }
+      @media screen and (max-width: 500px) {
+        .products-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="flexbox header-main">
+      <a href="./index.html" class="logo-link"
+        ><img class="logo" src="./assets/images/logo.png" alt="Hype Me Logo" />
+      </a>
+      <div class="right-nav flexbox">
+        <img
+          class="search-icon"
+          src="./assets/images/g-search.png"
+          alt="Search Icon"
+        />
+        <div class="location flexbox">
+          <span class="location-desc">TX 77441</span>
+          <img
+            src="./assets/images/location.png"
+            alt="Location Marker"
+            class="location-marker"
+          />
+        </div>
+        <div class="profile flexbox">
+          <img
+            src="./assets/images/channels4_profile.jpg"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <img
+            src="./assets/images/profile-arrow.png"
+            alt=""
+            class="dropdown-caret"
+          />
+          <ul class="prof-dd logout">
+            <li class="dd-item">
+              <button id="logout-btn">Log Out</button>
+            </li>
+          </ul>
+          <ul class="prof-dd login">
+            <li class="dd-item">
+              <button id="signup-btn">Sign Up</button>
+            </li>
+            <li class="dd-item">
+              <button id="login-btn">Log in</button>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons flexbox">
+          <button class="buy-btn" style="pointer-events: none">Buy</button
+          ><button class="sell-btn active">Sell</button>
+        </div>
+      </div>
+    </header>
+    <div class="breadcrumbs">
+      <a href="/" class="goto-home">Home</a> /
+      <span class="product-brand">All Shoes</span>
+    </div>
+    <div class="filter-mobile">
+      <button class="filter-slide-btn flexbox">
+        <img
+          src="./assets/images/Product List/icons8-filter-26.png"
+          alt=""
+          class="filter-icon"
+        />
+        <span style="letter-spacing: 0.5px">Filter</span>
+      </button>
+    </div>
+    <main class="main-content flexbox">
+      <div class="backdrop"></div>
+      <aside class="filters">
+        <h2 class="sidebar-header">
+          Filters
+          <img
+            src="./assets/images/Add Products/close.png"
+            alt=""
+            class="filter-close"
+          />
+        </h2>
+        <section class="filter-group">
+          <button>Condition</button>
+          <div style="padding-bottom: 0.5vw">
+            <label
+              ><input
+                type="checkbox"
+                name="condition"
+                value="new"
+                id="new-shoes"
+                autocomplete="off"
+              />
+              New Shoes</label
+            >
+            <label
+              ><input
+                type="checkbox"
+                name="condition"
+                value="used"
+                id="used-shoes"
+                autocomplete="off"
+              />
+              Used Shoes</label
+            >
+          </div>
+        </section>
+
+        <section class="filter-group">
+          <button class="expand">
+            Price
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+          <div class="filter-body">
+            <p>
+              $ <span id="min-range-val">50</span> - $
+              <span id="max-range-val">600</span>
+            </p>
+            <div class="slider-container">
+              <div class="range-track"></div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="0"
+                id="minRange"
+                autocomplete="off"
+              />
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value="60"
+                id="maxRange"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section class="filter-group brand-filter">
+          <button class="expand">
+            Brand
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+          <div class="filter-body">
+            <div class="search-bar flexbox">
+              <img
+                src="./assets/images/Product List/brand-search.png"
+                alt=""
+                class="search-icon"
+              />
+              <input
+                type="text"
+                placeholder="Search"
+                class="search-input brand-search"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section class="filter-group accordions">
+          <button>
+            Model
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+        </section>
+
+        <section class="filter-group accordions">
+          <button>
+            Categories
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+        </section>
+
+        <section class="filter-group accordions">
+          <button>
+            Color
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+        </section>
+
+        <section class="filter-group accordions">
+          <button>
+            Size Type
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+        </section>
+
+        <section class="filter-group accordions">
+          <button>
+            Size
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+        </section>
+
+        <section class="filter-group accordions">
+          <button>
+            Release Year
+            <img
+              src="./assets/images/Product List/down-arrow.png"
+              class="down-arr"
+              alt=""
+            />
+          </button>
+        </section>
+      </aside>
+      <section class="seller-products">
+        <div class="top-header flexbox">
+          <h2 class="section-title">
+            <span class="product-brand">All Shoes</span>
+            <span class="prods-count"
+              >(Showing 1- 45 products of 8921 products)</span
+            >
+          </h2>
+          <div class="filter flexbox">
+            Sort by:
+            <span style="color: rgb(165, 104, 221)" class="flexbox"
+              ><span>Featured</span>
+              <img
+                src="./assets/images/My Products/drop-down.png"
+                alt=""
+                class="dd-arr-icon"
+                style="margin-left: 0.4vw"
+              />
+            </span>
+          </div>
+        </div>
+        <div class="products-grid">
+          <div class="loader">
+            <div class="loader-circle">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="pagination-bar">
+      <button class="page-prev-btn">Prev</button>
+      <ul class="pagination"></ul>
+      <button class="page-next-btn">Next</button>
+    </div>
+    <footer class="footer-primary">
+      <ul class="footer-links flexbox">
+        <li class="link-item"><a href="">ABOUT US</a></li>
+        <li class="link-item"><a href="">WHY HYPE ME</a></li>
+        <li class="link-item"><a href="">CONTACT US</a></li>
+        <li class="link-item"><a href="">PRIVACY POLICY</a></li>
+        <li class="link-item"><a href="">DISCLAIMER</a></li>
+      </ul>
+      <div class="social-media-links">
+        <a href=""
+          ><img
+            src="./assets/images/instagram.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-facebook.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-twitter.png"
+            alt=""
+            class="link-icon"
+        /></a>
+      </div>
+      <div class="footer-bottom-text">
+        &copy; 2021 Hype-me. All Rights Reserved.
+      </div>
+    </footer>
+    <script src="./assets/js/productsFilter.js"></script>
+    <script src="./assets/js/pagination.js"></script>
+    <script src="./assets/js/switch.js"></script>
+    <script src="./assets/js/dropdowns.js"></script>
+    <script src="./assets/js/checkFilters.js"></script>
+  </body>
+</html>

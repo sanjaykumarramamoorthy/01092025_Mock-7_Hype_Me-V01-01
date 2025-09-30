@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <title>Hype Me</title>
+    <style>
+      .loading-message {
+        display: none;
+        position: fixed;
+        inset: 0 0 0 0;
+        place-items: center;
+        z-index: 10;
+        background-color: #00000052;
+        font-size: 2vw;
+        font-weight: bold;
+        color: white;
+      }
+      .loading-message > * {
+        padding: 3vw;
+        background-color: rgba(0, 0, 0, 0.699);
+      }
+      .profile {
+        position: relative;
+      }
+      .prof-dd {
+        position: absolute;
+        top: 100%;
+        margin-block: 0.3em;
+        left: 50%;
+        background-color: #5614c0d3;
+        border-radius: 0.2em;
+        color: white;
+        cursor: pointer;
+        display: none;
+      }
+      .prof-dd .dd-item button {
+        padding: 0.5em 1em;
+        width: 7em;
+      }
+      .dd-item:hover button,
+      .dd-item:hover {
+        background-color: white;
+        color: #5614c0d3;
+      }
+      .prof-dd button {
+        background: none;
+        border: none;
+        padding: 0;
+        color: white;
+      }
+      .prof-dd.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading-message">
+      <div>
+        <div style="text-align: center">Logging you in ...</div>
+      </div>
+    </div>
+    <div class="backdrop"></div>
+    <div class="login-slide">
+      <div class="close-btn">
+        <img src="./assets/images/close.png" alt="" />
+      </div>
+      <h1 class="header">Hello,</h1>
+      <p class="desc">Sign Up with your social network</p>
+      <br />
+      <div class="soc-media flexbox">
+        <div class="media-item">
+          <img src="./assets/images/fb.png" alt="" />
+        </div>
+        <div class="media-item">
+          <img src="./assets/images/google.png" alt="" />
+        </div>
+      </div>
+      <div style="text-align: center; margin-bottom: 1em">or</div>
+      <form method="post" class="field-rows login" action="/">
+        <div class="field login-mail">
+          <input type="email" placeholder="Email" name="email" required />
+        </div>
+        <div
+          class="field login-pass"
+          style="border: none; margin-bottom: 0.5em"
+        >
+          <div class="pwd">
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              required
+            />
+            <img
+              src="./assets/images/view_password.png"
+              alt=""
+              class="pwd-view active"
+            />
+            <img
+              src="./assets/images/hide_password.png"
+              alt=""
+              class="pwd-hide"
+            />
+          </div>
+          <span
+            style="
+              margin-block: 1em;
+              display: block;
+              font-size: 12px;
+              color: #7249bf;
+              text-align: right;
+            "
+            >Forgot password</span
+          >
+        </div>
+        <button class="login-btn" type="submit">Log In</button>
+        <div class="signup-text">
+          Don't have an account?
+          <span style="color: #7249bf" id="signup-link">Sign up</span>
+        </div>
+      </form>
+    </div>
+    <div class="sign-up-slide">
+      <div class="close-btn">
+        <img src="./assets/images/close.png" alt="" />
+      </div>
+      <h1 class="header">Hello,</h1>
+      <p class="desc">Sign Up with your social network</p>
+      <br />
+      <div class="soc-media flexbox">
+        <div class="media-item">
+          <img src="./assets/images/fb.png" alt="" />
+        </div>
+        <div class="media-item">
+          <img src="./assets/images/google.png" alt="" />
+        </div>
+      </div>
+      <div style="text-align: center; margin-bottom: 1em">or</div>
+      <form method="post" class="field-rows signup" action="/">
+        <div class="field name">
+          <input type="text" name="fullName" placeholder="Full Name" required />
+        </div>
+        <div class="field email">
+          <input type="email" name="email" placeholder="Email" required />
+        </div>
+        <div class="field password" style="border: none; margin-bottom: 0.5em">
+          <div class="pwd">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+            <img
+              src="./assets/images/view_password.png"
+              alt=""
+              class="pwd-view active"
+            />
+            <img
+              src="./assets/images/hide_password.png"
+              alt=""
+              class="pwd-hide"
+            />
+          </div>
+          <span
+            id="pwd-pattern"
+            style="
+              margin-block: 1em;
+              display: inline-block;
+              font-size: 12px;
+              color: #8d8c8c;
+            "
+          >
+            At least 8 characters, 1 uppercase letter, 1 number & 1 symbol
+          </span>
+        </div>
+        <div class="field zip" style="margin-bottom: 2em">
+          <input type="text" name="zipCode" placeholder="Zip Code" required />
+        </div>
+        <div class="terms-and-policy">
+          <input type="checkbox" name="term-policy" id="term-policy" />
+          <label for="term-policy" style="font-size: 13.5px">
+            By signing up, you agree to the
+            <span style="color: #7249bf">Terms of Service</span> and
+            <span style="color: #7249bf">Privacy Policy</span>
+          </label>
+        </div>
+        <button class="sign-up-btn" type="submit">Sign Up</button>
+        <div class="login-text">
+          Already have an account?
+          <span style="color: #7249bf" id="login-link">Log in</span>
+        </div>
+      </form>
+    </div>
+    <section class="hero-header-wrapper">
+      <header class="flexbox header-main home-header">
+        <a href="./index.html" class="logo-link"
+          ><img
+            class="logo"
+            src="./assets/images/logo.png"
+            alt="Hype Me Logo"
+          />
+        </a>
+        <div class="right-nav flexbox">
+          <img
+            class="search-icon"
+            src="./assets/images/g-search.png"
+            alt="Search Icon"
+          />
+          <div class="location flexbox">
+            <span class="location-desc">TX 77441</span>
+            <img
+              src="./assets/images/location.png"
+              alt="Location Marker"
+              class="location-marker"
+            />
+          </div>
+          <div class="profile flexbox">
+            <img
+              src="./assets/images/channels4_profile.jpg"
+              alt="Profile Image"
+              class="profile-img"
+            />
+            <img
+              src="./assets/images/profile-arrow.png"
+              alt=""
+              class="dropdown-caret"
+            />
+            <ul class="prof-dd logout">
+              <li class="dd-item">
+                <button id="logout-btn">Log Out</button>
+              </li>
+            </ul>
+            <ul class="prof-dd login">
+              <li class="dd-item">
+                <button id="signup-btn">Sign Up</button>
+              </li>
+              <li class="dd-item">
+                <button id="login-btn">Log in</button>
+              </li>
+            </ul>
+          </div>
+          <div class="buttons flexbox">
+            <button class="buy-btn" style="pointer-events: none">Buy</button
+            ><button class="sell-btn active">Sell</button>
+          </div>
+        </div>
+      </header>
+      <section class="hero" style="position: relative">
+        <h1 class="hero-intro-text">
+          <div class="swiper-button-prev"></div>
+          <div class="swiper hero-carousel">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                Most Inexpensive, Efficient, & Convenient service in Hype!
+              </div>
+              <div class="swiper-slide">
+                Sell your Sneakers with confidence on Hype Me
+              </div>
+              <div class="swiper-slide">
+                Buy & Sell your Shoes with ease on Hype Me
+              </div>
+            </div>
+          </div>
+          <div class="swiper-button-next"></div>
+        </h1>
+        <button class="discover flexbox">
+          <div class="">Discover</div>
+          <img
+            src="./assets/images/discover-arrow.png"
+            alt=""
+            class="discover-arrow"
+          />
+        </button>
+
+        <div class="pagination"><div class="swiper-pagination"></div></div>
+        <div class="search-bar">
+          <div class="search-wrapper flexbox">
+            <img
+              src="./assets/images/front-search.png"
+              alt="Search Icon"
+              id="search-bar-icon"
+            />
+            <input type="text" class="search-input" placeholder="Search..." />
+          </div>
+        </div>
+      </section>
+    </section>
+    <main class="main-content">
+      <section class="recent-searches">
+        <div class="label">Recent Searches</div>
+        <ul class="searches-chips flexbox">
+          <li class="chip-item" data-search="Jordan">Jordan 5 Shoes</li>
+          <li class="chip-item" data-search="Adidas">Adidas YZY Shoes</li>
+          <li class="chip-item" data-search="Nike">Nike Air Force</li>
+          <li class="chip-item" data-search="Adidas">adidas Yeezy 700</li>
+          <li class="chip-item" data-search="Nike">Nike Dunk</li>
+          <li class="chip-item" data-search="Nike">Nike Air Griffey Max</li>
+          <li class="chip-item" data-search="Adidas">
+            Adidas AW Run Alexander
+          </li>
+          <li class="chip-item" data-search="Nike">Nike Air Force 1</li>
+          <li class="chip-item" data-search="Jordan">Jordan 3 Retro</li>
+          <li class="chip-item" data-search="Adidas">Adidas Yeezy</li>
+        </ul>
+      </section>
+      <section class="popular-brands">
+        <h2 class="label">Popular brands of shoes</h2>
+        <br />
+        <ul class="brands-list flexbox">
+          <li class="list-item">
+            <div class="brand-item">
+              <img
+                src="./assets/images/off-white.png"
+                alt="Off-White Logo"
+                class="brand-logo"
+              />
+            </div>
+            <span class="brand-name">Off-White</span>
+          </li>
+          <li class="list-item">
+            <div class="brand-item">
+              <img
+                src="./assets/images/nike.png"
+                alt="Nike Logo"
+                class="brand-logo"
+              />
+            </div>
+            <span class="brand-name">Nike</span>
+          </li>
+          <li class="list-item">
+            <div class="brand-item">
+              <img
+                src="./assets/images/adidas.png"
+                alt="Adidas Logo"
+                class="brand-logo"
+              />
+            </div>
+            <span class="brand-name">Adidas</span>
+          </li>
+          <li class="list-item">
+            <div class="brand-item">
+              <img
+                src="./assets/images/yeezy.png"
+                alt="Yeezy Logo"
+                class="brand-logo"
+              />
+            </div>
+            <span class="brand-name">Yeezy</span>
+          </li>
+          <li class="list-item">
+            <div class="brand-item">
+              <img
+                src="./assets/images/jordan.png"
+                alt="Jordan Logo"
+                class="brand-logo"
+              />
+            </div>
+            <span class="brand-name">Jordan</span>
+          </li>
+        </ul>
+      </section>
+      <section class="recently-posted" style="position: relative">
+        <h2 class="label">Recently posted New Shoes</h2>
+        <br />
+        <div class="swiper-prev">
+          <img src="./assets/images/arr-forw.svg" alt="" />
+        </div>
+        <div class="shoeCardsSwiper swiper">
+          <ul class="shoes-cards swiper-wrapper">
+            <li class="card-item swiper-slide" data-item="Jordan5">
+              <div class="card-img">
+                <img src="./assets/images/shoe-1.jpg" alt="Jordan 5 Runner" />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Jordan 5 Runner</div>
+                <div class="price">$ 132.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="Supernal">
+              <div class="card-img">
+                <img
+                  src="./assets/images/shoe-2.jpg"
+                  alt="Supernal Men's Running"
+                />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Supernal Men's Running</div>
+                <div class="price">$ 249.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="Adidas">
+              <div class="card-img">
+                <img
+                  src="./assets/images/shoe-3.jpg"
+                  alt="Adidas Rapid Runner"
+                />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Adidas Rapid Runner</div>
+                <div class="price">$ 159.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="LowOne">
+              <div class="card-img">
+                <img src="./assets/images/shoe-4.jpg" alt="Low One Charcoal" />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Low one Charcoal</div>
+                <div class="price">$ 189.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="Jordan5">
+              <div class="card-img">
+                <img src="./assets/images/shoe-1.jpg" alt="Jordan 5 Runner" />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Jordan 5 Runner</div>
+                <div class="price">$ 132.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="Supernal">
+              <div class="card-img">
+                <img
+                  src="./assets/images/shoe-2.jpg"
+                  alt="Supernal Men's Running"
+                />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Supernal Men's Running</div>
+                <div class="price">$ 249.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="Adidas">
+              <div class="card-img">
+                <img
+                  src="./assets/images/shoe-3.jpg"
+                  alt="Adidas Rapid Runner"
+                />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Adidas Rapid Runner</div>
+                <div class="price">$ 159.00</div>
+              </div>
+            </li>
+            <li class="card-item swiper-slide" data-item="LowOne">
+              <div class="card-img">
+                <img src="./assets/images/shoe-4.jpg" alt="Low One Charcoal" />
+                <div class="like-hearts">
+                  <img
+                    src="./assets/images/heart.png"
+                    alt="Heart Icon"
+                    class="heart-icon active"
+                  />
+                  <img
+                    src="./assets/images/liked-heart.png"
+                    alt="liked heart icon"
+                  />
+                </div>
+              </div>
+              <div class="card-desc">
+                <div class="shoe-name">Low one Charcoal</div>
+                <div class="price">$ 189.00</div>
+              </div>
+            </li>
+          </ul>
+          <div class="swiper-scrollbar"></div>
+          <a href="./product-list.html" class="view-all"
+            >View All <img src="./assets/images/discover-arrow.png" alt=""
+          /></a>
+        </div>
+        <div class="swiper-next">
+          <img src="./assets/images/arr-forw.svg" alt="" />
+        </div>
+      </section>
+      <section class="budget-ranges">
+        <h2 class="label">Shop under Budget</h2>
+        <br />
+        <ul class="budget-list flexbox">
+          <li class="budget-item" data-budget="1">
+            <div>Between</div>
+            <div class="range">$1 - $200</div>
+          </li>
+          <li class="budget-item" data-budget="2">
+            <div>Between</div>
+            <div class="range">$200 - $400</div>
+          </li>
+          <li class="budget-item" data-budget="3">
+            <div>Between</div>
+            <div class="range">$400 - $600</div>
+          </li>
+          <li class="budget-item" data-budget="4">
+            <div>Between</div>
+            <div class="range">$600 - $1K</div>
+          </li>
+          <li class="budget-item" data-budget="5">
+            <div>Above</div>
+            <div class="range">$1000</div>
+          </li>
+        </ul>
+      </section>
+      <div class="future-arrival-panel">
+        <img src="./assets/images/running-shoes-add.jpg" alt="" />
+      </div>
+    </main>
+    <footer class="footer-primary">
+      <ul class="footer-links flexbox">
+        <li class="link-item"><a href="">ABOUT US</a></li>
+        <li class="link-item"><a href="">WHY HYPE ME</a></li>
+        <li class="link-item"><a href="">CONTACT US</a></li>
+        <li class="link-item"><a href="">PRIVACY POLICY</a></li>
+        <li class="link-item"><a href="">DISCLAIMER</a></li>
+      </ul>
+      <div class="social-media-links">
+        <a href=""
+          ><img
+            src="./assets/images/instagram.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-facebook.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-twitter.png"
+            alt=""
+            class="link-icon"
+        /></a>
+      </div>
+      <div class="footer-bottom-text">
+        &copy; 2021 Hype-me. All Rights Reserved.
+      </div>
+    </footer>
+    <button class="instagram-fixed">
+      <img src="./assets/images/instagram.png" alt="" />
+    </button>
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script>
+      const profImg = document.querySelector(".profile-img");
+      const switches = document.querySelectorAll(
+        ".header-main .buy-btn, .header-main .sell-btn"
+      );
+      if (isLoggedIn === "true") {
+        profImg.src = "./assets/images/channels4_profile.jpg";
+      } else {
+        profImg.src = "./assets/images/default-profile-pic.jpg";
+      }
+
+      switches.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          switches.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          if (btn.classList.contains("buy-btn")) {
+            window.location.href = "index.html";
+          } else if (isLoggedIn === "true") {
+            window.location.href = "myproducts.html";
+          } else {
+            profImg.src = "./assets/images/default-profile-pic.jpg";
+            signUpWin.classList.add("active");
+            backdrop.classList.add("active");
+            loginWin.classList.remove("active");
+          }
+        });
+      });
+    </script>
+    <script src="./assets/js/dropdowns.js"></script>
+  </body>
+</html>

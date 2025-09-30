@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selling Info</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <style>
+      .header-main {
+        background-color: white;
+        position: sticky;
+        top: 0;
+      }
+      .main-content {
+        padding: 3.8vw 9.5vw;
+        background-color: var(--main-section-bg);
+      }
+      .section-title {
+        color: white;
+        font-size: clamp(16px, 1.8vw, 2.1rem);
+        letter-spacing: 1px;
+      }
+      .main-content section {
+        background-color: white;
+      }
+      .arr-filled {
+        width: 1vw;
+        min-width: 5px;
+      }
+      .search-bar {
+        gap: 10px;
+      }
+      .search-bar.big {
+        width: 70%;
+        border-bottom: 1px solid #9e9d9d;
+        margin-top: 0.5vw;
+      }
+      .search-note {
+        width: 70%;
+        color: rgb(110, 110, 110);
+        margin-top: 0.3em;
+        font-size: clamp(12px, 1vw, 16px);
+      }
+      .search-bar.big input::placeholder {
+        color: rgba(98, 20, 143, 0.747);
+      }
+      .search-bar.big input {
+        font-size: clamp(12px, 1.2vw, 22px);
+        width: 0;
+        flex-grow: 1;
+      }
+      .search-bar.small {
+        width: 20%;
+        border-bottom: 1px solid #acacac;
+      }
+      .search-bar.small input {
+        font-size: clamp(12px, 1vw, 16px);
+      }
+      .search-bar.small input::placeholder {
+        color: rgb(158, 158, 158);
+      }
+      .search-bar input {
+        background: none;
+        border: none;
+        padding-block: 0.4em;
+      }
+      .search-icon.purple {
+        width: 1.2vw;
+        min-width: 10px;
+      }
+      .search-icon.gray {
+        width: 1vw;
+        min-width: 10px;
+      }
+      .sell-products {
+        padding: 1.7vw 1.7vw 2vw 1.7vw;
+        margin-bottom: 3vw;
+      }
+      .search-product {
+        width: 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-right: 1px solid #bdbdbdef;
+      }
+      .add-product {
+        width: 42%;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .block-title {
+        font-size: clamp(16px, 1.2vw, 20px);
+        color: rgb(53, 53, 53);
+      }
+      .add-prod-btn {
+        font-size: clamp(12px, 1vw, 1.15rem);
+        padding: 0.8em 1em;
+        margin-block: 1.2vw 1.5vw;
+        background-color: rgb(94, 32, 194);
+        border: none;
+        color: rgba(255, 255, 255, 0.89);
+        cursor: pointer;
+      }
+      .section-header {
+        justify-content: space-between;
+        padding-block: 1vw;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+      }
+      .filter {
+        gap: 1vw;
+        font-size: clamp(14px, 1vw, 16px);
+        color: rgb(83, 83, 83);
+      }
+      .actions > div {
+        display: flex;
+        gap: 1.3vw;
+        align-items: center;
+        justify-content: center;
+      }
+      .edit img,
+      .delete img {
+        width: 1vw;
+        min-width: 12px;
+      }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 1vw;
+        max-width: 140px;
+        text-align: center;
+        margin-inline: auto;
+      }
+      .status img {
+        width: 1vw;
+        min-width: 15px;
+      }
+      .product-listing {
+        padding: 1vw 1.3vw;
+        box-sizing: border-box;
+
+        overflow: auto;
+      }
+      .sellers-table {
+        text-align: center;
+        margin-bottom: 3vw;
+        width: 100%;
+        overflow-x: auto;
+        min-width: 800px;
+      }
+      .sellers-table thead {
+        background-color: #d6d6d65e;
+        color: rgb(97, 97, 97);
+      }
+      .sellers-table tr {
+        border-bottom: 1px solid #bdbdbd;
+      }
+      .sellers-table td {
+        padding: 0.7em 0.3em;
+        color: rgb(75, 75, 75);
+        font-size: clamp(12px, 1vw, 16px);
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .sellers-table th {
+        padding: 1.5em 1em;
+        font-size: clamp(14px, 1.1vw, 18px);
+        font-weight: normal;
+      }
+      .sellers-table td {
+        text-align: center;
+        border-bottom: 1px solid rgba(179, 178, 178, 0.658);
+      }
+      .sellers-table tr > td:first-child {
+        font-weight: bold;
+      }
+      .profile {
+        position: relative;
+      }
+      .prof-dd {
+        position: absolute;
+        top: 100%;
+        margin-block: 0.3em;
+        left: 50%;
+        background-color: #5614c0d3;
+        border-radius: 0.2em;
+        color: white;
+        cursor: pointer;
+        display: none;
+      }
+      .prof-dd .dd-item button {
+        padding: 0.5em 1em;
+        width: 7em;
+      }
+      .dd-item:hover button,
+      .dd-item:hover {
+        background-color: white;
+        color: #5614c0d3;
+      }
+      .prof-dd button {
+        background: none;
+        border: none;
+        padding: 0;
+        color: white;
+      }
+      .prof-dd.active {
+        display: block;
+      }
+      #view-prof-link {
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        display: block;
+      }
+      #view-prof-link:hover {
+        color: var(--main-section-bg);
+      }
+      @media screen and (max-width: 1200px) {
+        .main-content {
+          padding: 2vw 4vw 4vw 4vw;
+        }
+        .sellers-table td {
+          padding-block: 1em;
+        }
+        .sellers-table th {
+          padding-block: 0.7em;
+        }
+        .search-bar.small {
+          width: auto;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .sell-products {
+          flex-direction: column;
+        }
+        .product-listing .section-header {
+          position: sticky;
+          left: 0;
+        }
+        .add-product {
+          width: 100%;
+        }
+        .search-product {
+          width: 100%;
+          border: none;
+        }
+        .actions > div {
+          gap: 10px;
+        }
+        .search-product .block-title {
+          text-align: center;
+        }
+        .sell-products {
+          padding: 20px 10px;
+        }
+      }
+      @media screen and (max-width: 480px) {
+        .search-bar.big,
+        .search-note {
+          width: 90%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="flexbox header-main">
+      <a href="./index.html" class="logo-link"
+        ><img class="logo" src="./assets/images/logo.png" alt="Hype Me Logo" />
+      </a>
+      <div class="right-nav flexbox">
+        <img
+          class="search-icon"
+          src="./assets/images/g-search.png"
+          alt="Search Icon"
+        />
+        <div class="location flexbox">
+          <span class="location-desc">TX 77441</span>
+          <img
+            src="./assets/images/location.png"
+            alt="Location Marker"
+            class="location-marker"
+          />
+        </div>
+        <div class="profile flexbox">
+          <img
+            src="./assets/images/channels4_profile.jpg"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <img
+            src="./assets/images/profile-arrow.png"
+            alt=""
+            class="dropdown-caret"
+          />
+          <ul class="prof-dd logout">
+            <li class="dd-item">
+              <a href="./seller-profile.html" id="view-prof-link"
+                >View Profile</a
+              >
+            </li>
+            <li class="dd-item">
+              <button id="logout-btn">Log Out</button>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons flexbox">
+          <button class="buy-btn active">Buy</button
+          ><button class="sell-btn" style="pointer-events: none;">Sell</button>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <h1 class="section-title">Sell Your Products</h1>
+      <section class="sell-products flexbox">
+        <div class="search-product">
+          <h2 class="block-title">Is the product already listed on Hype-Me?</h2>
+          <div class="search-bar flexbox big">
+            <img
+              src="./assets/images/g-search.png"
+              alt=""
+              class="search-icon purple"
+            />
+            <input type="text" placeholder="Search..." />
+          </div>
+          <p class="search-note">
+            Search products available on Hype-Me Catalog.
+          </p>
+        </div>
+        <div class="add-product">
+          <h2 class="block-title">Have unique products to sell?</h2>
+          <a
+            href="./add-product.html"
+            class="add-prod-btn"
+            style="color: white; text-decoration: none"
+            >Add Your Product</a
+          >
+        </div>
+      </section>
+      <h1 class="section-title">Products Listings</h1>
+      <section class="product-listing">
+        <header class="section-header flexbox">
+          <div class="filter flexbox">
+            Filter By Status
+            <img
+              src="./assets/images/Add Products/filled-arrow.png"
+              alt=""
+              class="arr-filled"
+            />
+          </div>
+          <div class="search-bar flexbox small">
+            <span class="search-icon gray">
+              <img
+                src="./assets/images/Product List/icons8-search-50.png"
+                alt=""
+              />
+            </span>
+            <input type="text" placeholder="Search Brand or Model" />
+          </div>
+        </header>
+        <table class="sellers-table" border="0" cellspacing="0">
+          <thead>
+            <tr>
+              <th>SELLING ID</th>
+              <th>BRAND</th>
+              <th>MODEL</th>
+              <th>CREATED ON</th>
+              <th>LAST PROCESSED ON</th>
+              <th style="text-align: left">STATUS</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>62478523</td>
+              <td>Nike</td>
+              <td>Air max sean Wotherspoon</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td class="draft">
+                <div class="status">
+                  <img
+                    src="./assets/images/My Products/edit-draft.png"
+                    alt=""
+                  />
+                  <span>Draft</span>
+                </div>
+              </td>
+              <td class="actions">
+                <div>
+                  <span class="edit"
+                    ><img
+                      src="./assets/images/My Products/edit.png"
+                      alt="" /></span
+                  ><span class="delete"
+                    ><img src="./assets/images/My Products/delete.png" alt=""
+                  /></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>68522473</td>
+              <td>Yeezy</td>
+              <td>Ultra Boost</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td class="posted">
+                <div class="status">
+                  <img
+                    src="./assets/images/My Products/completed tick.png"
+                    alt=""
+                  />
+                  <span>Posted</span>
+                </div>
+              </td>
+              <td class="actions">
+                <div>
+                  <span class="edit"
+                    ><img
+                      src="./assets/images/My Products/edit.png"
+                      alt="" /></span
+                  ><span class="delete"
+                    ><img src="./assets/images/My Products/delete.png" alt=""
+                  /></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>65224783</td>
+              <td>Adidas</td>
+              <td>Boost 700</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td class="progress">
+                <div class="status">
+                  <img
+                    src="./assets/images/My Products/edit-draft.png"
+                    alt=""
+                  />
+                  <span>Draft</span>
+                </div>
+              </td>
+              <td class="actions">
+                <div>
+                  <span class="edit"
+                    ><img
+                      src="./assets/images/My Products/edit.png"
+                      alt="" /></span
+                  ><span class="delete"
+                    ><img src="./assets/images/My Products/delete.png" alt=""
+                  /></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>68524723</td>
+              <td>Jordan</td>
+              <td>Fontanka Edge</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td class="failed">
+                <div class="status">
+                  <img
+                    src="./assets/images/My Products/completed tick.png"
+                    alt=""
+                  />
+                  <span>Posted</span>
+                </div>
+              </td>
+              <td class="actions">
+                <div>
+                  <span class="edit"
+                    ><img
+                      src="./assets/images/My Products/edit.png"
+                      alt="" /></span
+                  ><span class="delete"
+                    ><img src="./assets/images/My Products/delete.png" alt=""
+                  /></span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>64785232</td>
+              <td>Nike</td>
+              <td>Air max sean Wotherspoon</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td>Apr 21, 2021 10:15AM</td>
+              <td class="error">
+                <div class="status">
+                  <img
+                    src="./assets/images/My Products/completed tick.png"
+                    alt=""
+                  />
+                  <span>Posted</span>
+                </div>
+              </td>
+              <td class="actions">
+                <div>
+                  <span class="edit"
+                    ><img
+                      src="./assets/images/My Products/edit.png"
+                      alt="" /></span
+                  ><span class="delete"
+                    ><img src="./assets/images/My Products/delete.png" alt=""
+                  /></span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+    <script>
+      const logout = document.querySelector("#logout-btn");
+
+      logout.addEventListener("click", () => {
+        localStorage.setItem("loggedIn", "false");
+        window.location.reload();
+      });
+      const profileDD = document.querySelector(".profile .dropdown-caret");
+      const logoutDD = document.querySelector(".prof-dd.logout");
+      profileDD.addEventListener("click", () => {
+        logoutDD.classList.toggle("active");
+      });
+    </script>
+    <script src="./assets/js/switch.js"></script>
+  </body>
+</html>

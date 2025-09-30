@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <style>
+      .header-main {
+        position: sticky;
+        top: 0;
+        background-color: white;
+      }
+      .main-content {
+        padding: 5vw 5.65vw;
+        background-color: var(--main-section-bg);
+      }
+      .page-title {
+        font-size: clamp(20px, 2vw, 2.3rem);
+        margin-top: 0;
+        color: white;
+        font-weight: 600;
+        position: relative;
+      }
+      .close-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2vw;
+        min-width: 20px;
+        cursor: pointer;
+        border: none;
+        background: none;
+        padding: 0;
+      }
+      .chats-section {
+        padding: 2.5vw;
+        padding-bottom: 4.5vw;
+        background-color: white;
+      }
+      .chats-container {
+        display: flex;
+        border: 1px solid #dbdbdb;
+        box-sizing: border-box;
+      }
+      .chats-container > * {
+        padding: 1vw;
+      }
+      .chats-section .chat-window {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s ease;
+      }
+      .chat-window {
+        border-left: 1px solid #dbdbdb;
+        padding: 0;
+      }
+      .chat-window > * {
+        padding: 1vw;
+      }
+      .sidebar {
+        width: 38.5%;
+        padding-inline: 0;
+        padding-bottom: 8vw;
+      }
+      .chat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #dbdbdb;
+        padding: 1.6vw 2vw;
+        box-sizing: border-box;
+      }
+      .search {
+        padding: 10px;
+        margin-inline: 1vw;
+        border-bottom: 1px solid #dbdbdb;
+      }
+      .search input {
+        width: 100%;
+        padding: 8px;
+        border: none;
+        font-size: clamp(12px, 1vw, 20px);
+      }
+      .search-icon {
+        width: 1.35vw;
+        min-width: 12px;
+      }
+      .info {
+        gap: 1.3vw;
+      }
+      .prod-desc h4 {
+        margin-block: 0;
+        font-size: clamp(16px, 1.3vw, 24px);
+        color: rgb(51, 51, 51);
+      }
+      .prod-name {
+        padding-block: 0.1em;
+        font-size: clamp(12px, 1.2vw, 20px);
+        color: rgb(100, 100, 100);
+      }
+      .prod-img {
+        width: 3.75vw;
+        min-width: 40px;
+      }
+      .chat-input {
+        display: flex;
+        margin-top: auto;
+        border-top: 1px solid #dbdbdb;
+        padding: 0;
+        align-items: center;
+      }
+      .chat-input button {
+        border: none;
+        background: none;
+        padding-inline: 2.3rem;
+      }
+      .chat-input input {
+        flex-grow: 1;
+        border: none;
+        padding: 1vw 0;
+        font-size: clamp(12px, 1vw, 18px);
+      }
+      .chat-input input::placeholder {
+        color: rgb(184, 184, 184);
+      }
+      .chat-item {
+        justify-content: space-between;
+      }
+      .chat-item:hover {
+        background-color: rgba(192, 192, 192, 0.226);
+        cursor: pointer;
+      }
+      .chat-btns {
+        gap: 1vw;
+        margin-right: 1vw;
+      }
+      .more-dots,
+      .chat-close-btn {
+        width: 1vw;
+        min-width: 15px;
+      }
+      .more-dots {
+        margin-inline: auto 10px;
+      }
+      .last-msg {
+        gap: 0.5vw;
+        color: gray;
+        font-size: clamp(14px, 1vw, 18px);
+      }
+      .tick-icon {
+        width: 1vw;
+        min-width: 10px;
+      }
+      .time {
+        color: gray;
+        font-size: clamp(12px, 1vw, 14px);
+      }
+      .chat-item {
+        padding: 1.3vw;
+        border-bottom: 1px solid #dbdbdb;
+      }
+      .chat-item .prod-img {
+        width: 3vw;
+        min-width: 25px;
+        align-self: flex-start;
+      }
+      .chat-item .user-name {
+        font-size: clamp(14px, 1vw, 18px);
+      }
+      .chat-item .prod-name {
+        font-size: clamp(12px, 1vw, 16px);
+      }
+      .chat-item .more-dots {
+        width: 0.6vw;
+        min-width: 8px;
+      }
+      .chat-filter-chips {
+        padding-block: 1vw;
+        margin-inline: 1vw;
+      }
+      .chat-filter-chips .chip-item {
+        padding: 0.5em 1.15em;
+        background-color: white;
+        border-radius: 100px;
+        margin-left: 0.8em;
+        font-size: clamp(12px, 1vw, 16px);
+        cursor: pointer;
+        color: rgb(77, 77, 77);
+        outline: 1px solid rgb(77, 77, 77);
+      }
+      .chip-item.active {
+        background-color: #e2e2e2;
+        outline: none;
+      }
+      .chat-datetime {
+        text-indent: 40%;
+        padding-block: 0.5vw;
+        font-size: clamp(12px, 1vw, 14px);
+      }
+      .messages {
+        padding: 1vw 2.6vw;
+      }
+      .message {
+        color: rgb(54, 54, 54);
+        padding: 0.2em 0.7em;
+        background-color: rgba(153, 193, 238, 0.267);
+        width: fit-content;
+        border-radius: 0.3em;
+        font-size: clamp(12px, 1vw, 18px);
+        margin-block: 0.23em;
+      }
+      .message.sent {
+        margin-left: auto;
+        background-color: transparent;
+      }
+      .message small {
+        margin-top: 1.3em;
+        color: gray;
+      }
+      .message.received {
+        margin-right: auto;
+        position: relative;
+        border-top-left-radius: 0;
+      }
+      .message.received::before {
+        content: "";
+        display: block;
+        width: 5%;
+        height: 30%;
+        position: absolute;
+        right: 100%;
+        background-image: linear-gradient(
+          25deg,
+          transparent 50%,
+          transparent 50%,
+          rgba(153, 193, 238, 0.267) 50%
+        );
+        top: 0;
+      }
+      .message .tick-icon {
+        margin-left: 0.4em;
+      }
+      .msg-text {
+        display: inline-block;
+        margin-right: 1.3em;
+      }
+      .last-msg span {
+        width: 19vw;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .send-btns img {
+        display: none;
+        cursor: pointer;
+      }
+      .send-btns img.active {
+        display: block;
+      }
+      @media screen and (max-width: 1600px) {
+        .main-content {
+          padding: 3vw;
+        }
+        .more-dots {
+          scale: 0.7;
+        }
+        .chat-input img {
+          width: 20px;
+        }
+      }
+      @media screen and (max-width: 1200px) {
+        .chat-input {
+          padding-block: 5px;
+        }
+        .chat-btns {
+          margin-right: 0;
+        }
+        .info {
+          gap: 7px;
+        }
+        .time {
+          position: relative;
+        }
+      }
+      @media screen and (max-width: 900px) {
+        .chat-btns:last-child {
+          position: relative;
+          right: 5%;
+        }
+        .chat-filter-chips {
+          padding-block: 15px 10px;
+        }
+        .chat-window {
+          transition: all 0.5s ease;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .chats-section {
+          height: 66.5vh;
+        }
+        .chats-container {
+          height: 100%;
+        }
+        .chat-window {
+          border-left: none;
+        }
+        .messages {
+          margin-bottom: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="flexbox header-main">
+      <a href="./index.html" class="logo-link"
+        ><img class="logo" src="./assets/images/logo.png" alt="Hype Me Logo" />
+      </a>
+      <div class="right-nav flexbox">
+        <img
+          class="search-icon"
+          src="./assets/images/g-search.png"
+          alt="Search Icon"
+        />
+        <div class="location flexbox">
+          <span class="location-desc">TX 77441</span>
+          <img
+            src="./assets/images/location.png"
+            alt="Location Marker"
+            class="location-marker"
+          />
+        </div>
+        <div class="profile flexbox">
+          <img
+            src="./assets/images/channels4_profile.jpg"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <img
+            src="./assets/images/profile-arrow.png"
+            alt=""
+            class="dropdown-caret"
+          />
+          <ul class="prof-dd logout">
+            <li class="dd-item">
+              <button id="logout-btn">Log Out</button>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons flexbox">
+          <button class="buy-btn" style="pointer-events: none">Buy</button
+          ><button class="sell-btn active">Sell</button>
+        </div>
+      </div>
+    </header>
+    <main class="main-content">
+      <h1 class="page-title">
+        Chats
+        <button class="close-btn">
+          <img src="./assets/images/close.png" alt="" />
+        </button>
+      </h1>
+      <section class="chats-section">
+        <div class="chats-container">
+          <div class="sidebar">
+            <div class="search flexbox">
+              <img
+                src="./assets/images/g-search.png"
+                alt="search magnifier image"
+                class="search-icon"
+              />
+              <input type="text" placeholder="Search" />
+            </div>
+            <div class="chat-filter-chips flexbox">
+              <div class="chip-item active">All</div>
+              <div class="chip-item">Unread Chats</div>
+            </div>
+            <div class="chat-list">
+              <div class="chat-item flexbox" data-chat-id="1">
+                <div class="info flexbox">
+                  <img
+                    src="./assets/images/chat page/product-picture-1.png"
+                    alt=""
+                    class="prod-img"
+                  />
+                  <div class="prod-desc">
+                    <h4 class="user-name">Siva Sanz</h4>
+                    <div class="prod-name">Low One Blue Shine</div>
+                    <div class="last-msg flexbox">
+                      <img
+                        src="./assets/images/chat page/double-tick-gray.svg"
+                        alt=""
+                        class="tick-icon"
+                      />
+                      <span class="text">yes, it's available</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-btns">
+                  <div class="time">09:58</div>
+                  <div class="more-dots">
+                    <img src="./assets/images/chat page/more.png" alt="" />
+                  </div>
+                </div>
+              </div>
+              <div class="chat-item flexbox" data-chat-id="2">
+                <div class="info flexbox">
+                  <img
+                    src="./assets/images/chat page/product-picture-2.png"
+                    alt=""
+                    class="prod-img"
+                  />
+                  <div class="prod-desc">
+                    <h4 class="user-name">Tony</h4>
+                    <div class="prod-name">Supernal Men's Running</div>
+                    <div class="last-msg flexbox">
+                      <img
+                        src="./assets/images/chat page/double-tick.svg"
+                        alt=""
+                        class="tick-icon"
+                      />
+                      <span class="text">sorry, it's already been sold</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-btns">
+                  <div class="time">16/04/21</div>
+                  <div class="more-dots">
+                    <img src="./assets/images/chat page/more.png" alt="" />
+                  </div>
+                </div>
+              </div>
+              <div class="chat-item flexbox" data-chat-id="3">
+                <div class="info flexbox">
+                  <img
+                    src="./assets/images/chat page/product-picture-3.png"
+                    alt=""
+                    class="prod-img"
+                  />
+                  <div class="prod-desc">
+                    <h4 class="user-name">Tushar</h4>
+                    <div class="prod-name">Smash Badminton Shoes</div>
+                    <div class="last-msg flexbox">
+                      <img
+                        src="./assets/images/chat page/double-tick.svg"
+                        alt=""
+                        class="tick-icon"
+                      />
+                      <span class="text">Sorry, I can't go below $280.</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-btns">
+                  <div class="time">24/02/2021</div>
+                  <div class="more-dots">
+                    <img src="./assets/images/chat page/more.png" alt="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-window">
+            <div class="chat-header">
+              <div class="info flexbox">
+                <img
+                  src="./assets/images/chat page/product-picture-1-large.png"
+                  alt=""
+                  class="prod-img"
+                />
+                <div class="prod-desc">
+                  <h4 class="name">Siva Sanz</h4>
+                  <div class="prod-name">
+                    Low One Blue Shoe
+                    <span class="price" style="color: black"
+                      >&nbsp; | &nbsp; $345</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="chat-btns flexbox">
+                <div class="more-dots">
+                  <img src="./assets/images/chat page/more.png" alt="" />
+                </div>
+                <div class="chat-close-btn">
+                  <img src="./assets/images/chat page/chat-close.png" alt="" />
+                </div>
+              </div>
+            </div>
+            <div class="chat-datetime">Today</div>
+            <div class="messages">
+              <div class="message received flexbox">
+                <span class="msg-text"> Is it available? </span>
+                <small>09:40</small>
+              </div>
+              <div class="message sent flexbox">
+                <span class="msg-text">yes it's available?</span>
+                <small class="flexbox"
+                  >09:58
+                  <div class="seen-status">
+                    <img
+                      src="./assets/images/chat page/double-tick.svg"
+                      class="tick-icon"
+                      alt=""
+                    /></div
+                ></small>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <button>
+                <img src="./assets/images/chat page/attach.png" alt="" />
+              </button>
+              <input type="text" placeholder="Type a message" />
+              <button class="send-btns">
+                <img
+                  src="./assets/images/chat page/mic.png"
+                  alt=""
+                  class="active"
+                />
+                <img src="./assets/images/chat page/send.png" alt="" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./assets/js/chatPage.js"></script>
+    <script src="./assets/js/switch.js"></script>
+    <script src="./assets/js/logout.js"></script>
+  </body>
+</html>

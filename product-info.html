@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Info</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/base.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
+    <style>
+      .header-main {
+        background-color: white;
+        position: sticky;
+        top: 0;
+      }
+      .img-preview-container {
+        min-width: 200px;
+        min-height: 150px;
+        width: 46vw;
+        height: 30vw;
+        background-color: white;
+        padding: 0.7vw 0.2vw;
+      }
+      .img-preview-container img {
+        object-fit: contain;
+        height: 100%;
+        width: 100%;
+      }
+      .main-content {
+        background-color: var(--main-section-bg);
+      }
+      .breadcrumbs {
+        padding-block: 1.3vw;
+        color: rgb(216, 214, 214);
+      }
+      .product-name {
+        color: white;
+        font-size: clamp(16px, 3vw, 2.1rem);
+        letter-spacing: 2px;
+        margin-block: 0.5em 1em;
+        justify-content: space-between;
+      }
+      .views-cards {
+        gap: 1vw;
+        margin-block: 1.8vw 5vw;
+      }
+      .view {
+        aspect-ratio: 11 / 10;
+        background-color: white;
+        cursor: pointer;
+        width: 121px;
+        box-sizing: border-box;
+        padding: 1.5%;
+        min-width: 65px;
+      }
+      .view:hover {
+        outline: 2px solid#5718be;
+      }
+      .view img {
+        object-fit: scale-down;
+        height: 100%;
+      }
+      .like-share-btns {
+        gap: 1vw;
+      }
+      .like-share-btns img {
+        width: 2vw;
+        min-width: 15px;
+      }
+      .main-content > *:not(.similar-products) {
+        padding-inline: 11.5vw;
+      }
+      .product-info-container {
+        align-items: flex-start;
+        gap: 2.5vw;
+      }
+      .product-img-views {
+        width: 60%;
+      }
+      .price-card {
+        background-color: rgb(231, 231, 231);
+        padding-top: 1vw;
+        box-sizing: border-box;
+      }
+      .price-card > *:not(.buy-btn) {
+        padding-inline: 1.3vw;
+      }
+      .product-info {
+        width: 0;
+        flex-grow: 1;
+      }
+      .prod-manfr {
+        margin-bottom: 2.5vw;
+      }
+      .prod-price {
+        font-size: clamp(18px, 2.6vw, 3rem);
+        font-family: "Poppins bold";
+        color: rgb(51, 51, 51);
+      }
+      .like-hearts img:not(.active) {
+        display: none;
+      }
+      .main-content .buy-btn {
+        width: 100%;
+        margin: 0;
+        padding: 0.6em;
+        box-sizing: border-box;
+        font-size: clamp(16px, 1.7vw, 1.9rem);
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: var(--primary-color);
+        border: none;
+        color: white;
+        cursor: pointer;
+      }
+      .manfr-logo {
+        width: 5vw;
+        min-width: 30px;
+        cursor: pointer;
+      }
+      .reviews {
+        gap: 1vw;
+        color: var(--primary-color);
+      }
+      .review-stars {
+        margin: 0;
+      }
+      .manfr-desc {
+        margin-inline: 0.75vw;
+        margin-top: 1vw;
+      }
+      .manfr-name {
+        font-size: clamp(16px, 1.4vw, 1.6rem);
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: rgb(58, 58, 58);
+        cursor: pointer;
+      }
+      .member {
+        font-size: clamp(12px, 1vw, 18px);
+        margin-bottom: 0.65em;
+        color: rgb(95, 95, 95);
+      }
+      .prod-details-table {
+        margin: 1vw 1.75vw;
+      }
+      thead {
+        color: white;
+      }
+      tr td:first-child {
+        color: rgb(165, 164, 164);
+      }
+      td {
+        color: white;
+        font-size: clamp(14px, 1.4vw, 22px);
+        padding-right: 2em;
+      }
+      .view-more,
+      .read-more {
+        color: rgb(156, 101, 219);
+        font-size: clamp(14px, 1.2vw, 20px);
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .prod-desc {
+        color: rgb(216, 214, 214);
+        font-size: clamp(14px, 1vw, 18px);
+        margin-bottom: 4vw;
+      }
+      .prod-details-table th h2 {
+        font-size: clamp(16px, 1.4vw, 1.5rem);
+        margin-bottom: 0;
+      }
+      .desc-header {
+        font-size: clamp(16px, 1.4vw, 1.5rem);
+      }
+      .similar-products {
+        position: relative;
+        padding-bottom: 3vw;
+      }
+      .slider-wrapper {
+        padding-inline: 8vw;
+      }
+      .section-header {
+        font-size: clamp(18px, 2.5vw, 3rem);
+        font-family: "Poppins bold";
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: 3vw 1vw;
+        border-top: 1px solid #ddd;
+        margin-inline: 3vw;
+      }
+      .shoes-cards {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-bottom: 3vw;
+      }
+      .card-item {
+        cursor: pointer;
+        position: relative;
+        width: clamp(200px, 20vw, 370px);
+      }
+      .card-desc {
+        margin-top: 1.2em;
+        color: white;
+        font-size: clamp(14px, 1.2vw, 22px);
+      }
+      .card-desc .shoe-name {
+        color: rgb(163, 163, 163);
+      }
+      .card-img {
+        position: relative;
+        margin: 0;
+      }
+      .card-img img {
+        object-fit: contain;
+      }
+      .like-hearts {
+        position: absolute;
+        top: 1.5vw;
+        right: 1.5vw;
+        display: flex;
+        gap: 0.5vw;
+      }
+      .like-hearts img {
+        width: 1.5vw;
+        height: 1.5vw;
+        min-width: 15px;
+        min-height: 15px;
+        object-fit: scale-down;
+        cursor: pointer;
+      }
+      .like-hearts img:not(.active) {
+        display: none;
+      }
+      .swiper-prev,
+      .swiper-next {
+        width: 4vw;
+        min-width: 20px;
+        position: absolute;
+        top: 45%;
+        left: 2%;
+        right: auto;
+        cursor: pointer;
+        z-index: 3;
+      }
+      .swiper-next.swiper-button-disabled,
+      .swiper-prev.swiper-button-disabled {
+        opacity: 0.3;
+        cursor: unset;
+      }
+      .swiper-prev {
+        transform: rotate(180deg);
+      }
+      .swiper-next {
+        right: 2%;
+        left: auto;
+      }
+      .more-text {
+        display: none;
+      }
+      .more-text.show {
+        display: inline;
+      }
+      .more-info {
+        display: none;
+      }
+      .more-info.show {
+        display: table-row;
+      }
+      dialog.ask-signup .dialog-content {
+        background-color: white;
+        padding: 2em;
+        border-radius: 8px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      dialog.ask-signup .dialog-buttons {
+        margin-top: 1.5em;
+        justify-content: center;
+        gap: 1.5em;
+      }
+      dialog.ask-signup .dialog-btn {
+        padding: 0.5em 2em;
+        font-size: clamp(14px, 1.2vw, 18px);
+        border: none;
+        cursor: pointer;
+        background-color: var(--primary-color);
+        color: white;
+      }
+      @media screen and (max-width: 1600px) {
+        .main-content > *:not(.similar-products) {
+          padding-inline: 6vw;
+        }
+        .product-info {
+          width: 500px;
+          flex-grow: 0;
+        }
+        .view {
+          width: 100px;
+        }
+      }
+      @media screen and (max-width: 1200px) {
+        .img-preview-container {
+          width: auto;
+        }
+        .product-info {
+          width: 450px;
+          flex-grow: 0;
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        .reviews {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .prod-manfr {
+          gap: 20px;
+          align-items: flex-start;
+        }
+        .manfr-desc {
+          margin: 0;
+        }
+        .product-info {
+          width: 350px;
+        }
+        .view {
+          width: 80px;
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .product-info-container {
+          flex-direction: column;
+        }
+        .product-info-container > * {
+          width: 100%;
+        }
+        .price-card {
+          width: 75%;
+        }
+        .price-card > *:not(.buy-btn) {
+          padding: 15px;
+        }
+        .card-break {
+          display: none;
+        }
+        .prod-details-table {
+          margin-bottom: 20px;
+        }
+        .img-preview-container {
+          height: 50vw;
+        }
+        .view {
+          margin-right: 3px;
+        }
+      }
+      @media screen and (max-width: 480px) {
+        .prod-manfr {
+          gap: 10px;
+        }
+        .manfr-logo {
+          width: 30px;
+        }
+        .price-card {
+          padding: 10px;
+        }
+        .price-card > *:not(.buy-btn) {
+          padding: 5px;
+        }
+        .price-card {
+          width: 100%;
+        }
+        .rev-count {
+          font-size: 14px;
+        }
+        .review-stars i {
+          font-size: 14px;
+        }
+        .like-share-btns {
+          gap: 15px;
+        }
+        .breadcrumbs {
+          padding-block: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="flexbox header-main">
+      <a href="./index.html" class="logo-link"
+        ><img class="logo" src="./assets/images/logo.png" alt="Hype Me Logo" />
+      </a>
+      <div class="right-nav flexbox">
+        <img
+          class="search-icon"
+          src="./assets/images/g-search.png"
+          alt="Search Icon"
+        />
+        <div class="location flexbox">
+          <span class="location-desc">TX 77441</span>
+          <img
+            src="./assets/images/location.png"
+            alt="Location Marker"
+            class="location-marker"
+          />
+        </div>
+        <div class="profile flexbox">
+          <img
+            src="./assets/images/default-profile-pic.jpg"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <img
+            src="./assets/images/profile-arrow.png"
+            alt=""
+            class="dropdown-caret"
+          />
+          <ul class="prof-dd logout">
+            <li class="dd-item">
+              <button id="logout-btn">Log Out</button>
+            </li>
+          </ul>
+          <ul class="prof-dd login">
+            <li class="dd-item">
+              <button id="signup-btn">Sign Up</button>
+            </li>
+            <li class="dd-item">
+              <button id="login-btn">Log in</button>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons flexbox">
+          <button class="buy-btn" style="pointer-events: none">Buy</button
+          ><button class="sell-btn active">Sell</button>
+        </div>
+      </div>
+    </header>
+    <dialog class="ask-signup">
+      <div class="dialog-content">
+        <h2>Please log in to continue</h2>
+        <div class="dialog-buttons flexbox">
+          <button class="dialog-btn" id="dialog-login-btn">Log In</button>
+          <button class="dialog-btn" id="dialog-cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+    <main class="main-content">
+      <div class="breadcrumbs">
+        <a
+          href="./index.html"
+          style="color: rgb(216, 214, 214); text-decoration: none"
+          >Home</a
+        >
+        /
+        <span class="shoe-name">Men's Rapid Runner</span>
+      </div>
+      <h1 class="product-name flexbox">
+        <span class="shoe-name">Men's Rapid Runner</span>
+        <div class="like-share-btns flexbox">
+          <img
+            src="./assets/images/Single Product Images/heart-white.png"
+            alt=""
+          />
+          <img src="./assets/images/Single Product Images/share.png" alt="" />
+        </div>
+      </h1>
+      <div class="product-info-container flexbox">
+        <section class="product-img-views">
+          <div class="img-preview-container">
+            <img src="./assets/images/Single Product Images/shoe1.jpg" alt="" />
+          </div>
+          <div class="views-cards flexbox">
+            <div class="view">
+              <img
+                src="./assets/images/Single Product Images/sh1-v1.jpg"
+                alt=""
+              />
+            </div>
+            <div class="view">
+              <img
+                src="./assets/images/Single Product Images/sh1-v2.jpg"
+                alt=""
+              />
+            </div>
+            <div class="view">
+              <img
+                src="./assets/images/Single Product Images/sh1-v3.jpg"
+                alt=""
+              />
+            </div>
+            <div class="view">
+              <img
+                src="./assets/images/Single Product Images/sh1-v4.jpg"
+                alt=""
+              />
+            </div>
+          </div>
+          <div class="prod-desc">
+            <h2 class="desc-header">Product Description</h2>
+            <p>
+              Asian Group of Industries started its shoe-making journey in the
+              year 1994 when we decided to deliver high quality & affordable
+              range of casual, sports and school shoes to the people of India.
+              <br />
+              <br />
+              From the time of introduction today, Asian has never stopped
+              working on improving the quality and comfort of its shoes.
+              <br />
+              <br />
+              <span class="more-text">
+                Today, Asian is a leading sports and casual footwear brand in
+                India. With a strong retail network of over 5000 multi-brand
+                outlets across the country, we are committed to providing our
+                customers with the best shopping experience.
+              </span>
+            </p>
+            <span class="read-more">Read More</span>
+          </div>
+        </section>
+        <section class="product-info">
+          <div class="price-card">
+            <span style="font-size: 20px; color: rgb(65, 65, 65)">Price</span>
+            <div class="prod-price">$ 92.00</div>
+            <br class="card-break" />
+            <div class="prod-manfr flexbox">
+              <div class="manfr-logo">
+                <img
+                  src="./assets/images/Single Product Images/seller_profile.png"
+                  alt=""
+                />
+              </div>
+              <div class="manfr-desc">
+                <div class="manfr-name">Malhotra Collections</div>
+                <div class="member">Member since Mar 2017</div>
+                <div class="reviews flexbox">
+                  <ul class="review-stars flexbox">
+                    <i class="fa-solid fa-star" style="color: #5718be"></i>
+                    <i class="fa-solid fa-star" style="color: #5718be"></i>
+                    <i class="fa-solid fa-star" style="color: #5718be"></i>
+                    <i class="fa-solid fa-star-half" style="color: #5718be"></i>
+                    <i class="fa-regular fa-star" style="color: #c2c1c4"></i>
+                  </ul>
+                  <div class="rev-count">
+                    257 Reviews | <span>Write a Review</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button class="buy-btn">Buy Now</button>
+          </div>
+          <div class="prod-details-table">
+            <table cellspacing="0" cellpadding="8">
+              <thead>
+                <tr>
+                  <th colspan="2" align="left"><h2>Product Details</h2></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Brand</td>
+                  <td>Asian</td>
+                </tr>
+                <tr>
+                  <td>Model</td>
+                  <td>Runner A2001</td>
+                </tr>
+                <tr>
+                  <td>Color</td>
+                  <td>Blue, Grey</td>
+                </tr>
+                <tr>
+                  <td>Size Type</td>
+                  <td>UK/India</td>
+                </tr>
+                <tr>
+                  <td>Size</td>
+                  <td>9</td>
+                </tr>
+                <tr>
+                  <td>Release Year</td>
+                  <td>2021</td>
+                </tr>
+                <tr>
+                  <td>Wide/Normal</td>
+                  <td>--</td>
+                </tr>
+                <tr class="more-info">
+                  <td>Condition</td>
+                  <td>New</td>
+                </tr>
+                <tr class="more-info">
+                  <td>Category</td>
+                  <td>Running Shoes</td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            <span class="view-more">View More</span>
+          </div>
+        </section>
+      </div>
+      <section class="similar-products">
+        <h1 class="section-header">Similar Products</h1>
+        <div class="swiper-prev">
+          <img src="./assets/images/arr-forw.svg" alt="" />
+        </div>
+        <div class="slider-wrapper">
+          <div class="products-slider swiper">
+            <ul class="shoes-cards swiper-wrapper">
+              <li class="card-item swiper-slide" data-item="Jordan5">
+                <div class="card-img">
+                  <img src="./assets/images/shoe-1.jpg" alt="Jordan 5 Runner" />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Jordan 5 Runner</div>
+                  <div class="price">$ 132.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="Supernal">
+                <div class="card-img">
+                  <img
+                    src="./assets/images/shoe-2.jpg"
+                    alt="Supernal Men's Running"
+                  />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Supernal Men's Running</div>
+                  <div class="price">$ 249.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="Adidas">
+                <div class="card-img">
+                  <img
+                    src="./assets/images/shoe-3.jpg"
+                    alt="Adidas Rapid Runner"
+                  />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Adidas Rapid Runner</div>
+                  <div class="price">$ 159.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="LowOne">
+                <div class="card-img">
+                  <img src="./assets/images/shoe-4.jpg" alt="LowOne Charcoal" />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Low one Charcoal</div>
+                  <div class="price">$ 189.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="Jordan5">
+                <div class="card-img">
+                  <img src="./assets/images/shoe-1.jpg" alt="Jordan 5 Runner" />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Jordan 5 Runner</div>
+                  <div class="price">$ 132.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="Supernal">
+                <div class="card-img">
+                  <img
+                    src="./assets/images/shoe-2.jpg"
+                    alt="Supernal Men's Running"
+                  />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Supernal Men's Running</div>
+                  <div class="price">$ 249.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="Adidas">
+                <div class="card-img">
+                  <img
+                    src="./assets/images/shoe-3.jpg"
+                    alt="Adidas Rapid Runner"
+                  />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Adidas Rapid Runner</div>
+                  <div class="price">$ 159.00</div>
+                </div>
+              </li>
+              <li class="card-item swiper-slide" data-item="LowOne">
+                <div class="card-img">
+                  <img src="./assets/images/shoe-4.jpg" alt="Reebok Classic" />
+                  <div class="like-hearts">
+                    <img
+                      src="./assets/images/heart.png"
+                      alt="Heart Icon"
+                      class="heart-icon active"
+                    />
+                    <img
+                      src="./assets/images/liked-heart.png"
+                      alt="liked heart icon"
+                    />
+                  </div>
+                </div>
+                <div class="card-desc">
+                  <div class="shoe-name">Low one Charcoal</div>
+                  <div class="price">$ 189.00</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="swiper-next">
+          <img src="./assets/images/arr-forw.svg" alt="" />
+        </div>
+      </section>
+    </main>
+    <footer class="footer-primary">
+      <ul class="footer-links flexbox">
+        <li class="link-item"><a href="">ABOUT US</a></li>
+        <li class="link-item"><a href="">WHY HYPE ME</a></li>
+        <li class="link-item"><a href="">CONTACT US</a></li>
+        <li class="link-item"><a href="">PRIVACY POLICY</a></li>
+        <li class="link-item"><a href="">DISCLAIMER</a></li>
+      </ul>
+      <div class="social-media-links">
+        <a href=""
+          ><img
+            src="./assets/images/instagram.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-facebook.png"
+            alt=""
+            class="link-icon" /></a
+        ><a href=""
+          ><img
+            src="./assets/images/footer-twitter.png"
+            alt=""
+            class="link-icon"
+        /></a>
+      </div>
+      <div class="footer-bottom-text">
+        &copy; 2021 Hype-me. All Rights Reserved.
+      </div>
+    </footer>
+    <script src="https://unpkg.com/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+      const swiper = new Swiper(".products-slider", {
+        slidesPerView: 4,
+        spaceBetween: 40,
+        navigation: {
+          nextEl: ".swiper-next",
+          prevEl: ".swiper-prev",
+        },
+        breakpoints: {
+          320: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          480: {
+            slidesPerView: 2,
+            spaceBetween: 30,
+          },
+          640: {
+            slidesPerView: 3,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 50,
+          },
+        },
+      });
+      document.querySelector(".read-more").addEventListener("click", (e) => {
+        const moreText = document.querySelector(".more-text");
+        if (moreText.classList.contains("show")) {
+          moreText.classList.remove("show");
+          e.target.textContent = "Read More";
+        } else {
+          moreText.classList.add("show");
+          e.target.textContent = "Read Less";
+        }
+      });
+      document.querySelector(".view-more").addEventListener("click", (e) => {
+        const moreInfo = document.querySelectorAll(".more-info");
+        if (moreInfo[0].classList.contains("show")) {
+          moreInfo.forEach((row) => row.classList.remove("show"));
+          e.target.textContent = "View More";
+        } else {
+          moreInfo.forEach((row) => row.classList.add("show"));
+          e.target.textContent = "View Less";
+        }
+      });
+    </script>
+    <script src="./assets/js/productInfo.js"></script>
+  </body>
+</html>
