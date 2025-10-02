@@ -34,7 +34,8 @@ function renderBrandsFilter(brands) {
     });
   });
 
-  function displayBrands(list) {
+  function displayBrands() {
+    let list = brands.slice(0, 5);
     brandsList.innerHTML = "";
     list.forEach((brand) => {
       const checked = checkedBrands.has(brand) ? "checked" : "";
@@ -58,12 +59,13 @@ function renderBrandsFilter(brands) {
           brand: b.value,
           checked: b.checked,
         }));
-        filterProductsByBrands(allStatuses);
+        brandsFilterContainer = brandsList;
+        masterFilter();
       });
     });
   }
 
-  displayBrands(brands.slice(0, 5));
+  displayBrands();
 
   showMore.addEventListener("click", (e) => {
     e.preventDefault();
@@ -85,30 +87,26 @@ function renderBrandsFilter(brands) {
     });
 }
 
-function filterProductsByBrands(allStatuses) {
-  const checkedBrands = allStatuses
-    .filter((status) => status.checked)
-    .map((status) => status.brand);
-  if (checkedBrands.length === 0) {
-    if (newShoes.checked && usedShoes.checked) {
-      applyConditionFilter("all");
-    } else if (newShoes.checked) {
-      applyConditionFilter("new");
-    } else if (usedShoes.checked) {
-      applyConditionFilter("used");
-    } else {
-      applyConditionFilter("all");
-    }
-    return;
-  }
-  const filtered = currFilter.filter((item) =>
-    checkedBrands.includes(item.brand.toLowerCase())
-  );
-  let priceFiltered = filtered.filter(
-    (item) =>
-      item.price >= minRange.value * 10 && item.price <= maxRange.value * 10
-  );
-  addPages(priceFiltered);
-  pageData = priceFiltered;
-  insertPageData(1, priceFiltered);
+let brandsFilterContainer;
+
+function brandsFilter() {
+  const statuses = Array.from(
+    brandsFilterContainer.querySelectorAll('input[type="checkbox"]')
+  ).map((b) => ({
+    brand: b.value,
+    checked: b.checked,
+  }));
+  let filtered = statuses.filter((item) => item.checked);
+  if (filtered.length === 0) return fetchedData;  
+  return fetchedData.filter((item) => filtered.includes(item.brand.toLowerCase()));
+}
+
+function masterFilter() {
+  let fil1 = conditionFilter();
+  console.log(fil1);
+  let fil2 = priceFilter(fil1);
+  console.log(fil2);
+  let fil3 = brandsFilter(fil2)
+  console.log(fil3)
+  // let fil3 = brandsFilter(fil2)
 }
